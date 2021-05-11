@@ -1,9 +1,12 @@
 // import H from "history";
+import {SIGN_UP} from '../constants/types'
 
-// export const firstSignup = function (firstStepInfo: FirstSignupStep) {
-//     console.log("first", firstStepInfo);
-//     return {
-//         type: types.PUT_USER_EMAIL_PSW,
-//         payload: firstStepInfo,
-//     };
-// };
+
+export const firstSignup = function (authToken) {
+    console.log("authToken", authToken);
+
+    return {
+        type:SIGN_UP,
+        payload: authToken,
+    };
+};

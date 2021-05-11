@@ -1,18 +1,16 @@
-const initialState = {
-    email: "",
-    password: "",
+import {SIGN_UP} from "../../constants/types";
 
+const initialState = {
+    authToken: '',
+    user: {}
 };
-const registrationReducer = (state = initialState, action: any) => {
+
+const registrationReducer = (state = initialState, action) => {
     switch (action.type) {
-        // case type.GET_SIGNIN_REQ:
-        //     return {
-        //         ...state,
-        //         email: action.payload.email,
-        //         password: action.payload.password,
-        //         loading: true,
-        //         message: "",
-        //     };
+        case SIGN_UP:
+            return {
+                token: action.payload
+            };
         default:
             return state;
     }

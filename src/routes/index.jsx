@@ -1,31 +1,35 @@
-import { BrowserRouter, Redirect } from "react-router-dom";
-import { Route } from "react-router";
-import Nav from "../components/nav/nav";
+import { BrowserRouter, Redirect } from 'react-router-dom';
+import { Route } from 'react-router';
+import Nav from '../components/nav/nav';
+import LogIn from '../pages/log-in/logIn';
+import SignUp from '../pages/sign-up/SignUp';
 
 export default function RootRouter() {
-    return (
-        // style={{ position: "relative" }}
-        <main>
-            <BrowserRouter>
-                <Route component={Nav} path="*" />
-                {/* <NotAuthedPrivateRoute
+	return (
+		// style={{ position: "relative" }}
+		<main>
+			<BrowserRouter>
+				<Route component={Nav} path="*" />
+				<Route component={LogIn} path="/log-in" />
+				<Route component={SignUp} path="/sign-up" />
+				{/* <NotAuthedPrivateRoute
                             component={ForgotPasswordPages}
                             path="/forgot-password"
                         /> */}
-                {/* <Route
+				{/* <Route
                             exact
                             component={MainAssetPage}
                             path="/asset-view/:id"
                         /> */}
-                {/* <AuthedPrivateRoute
+				{/* <AuthedPrivateRoute
                             component={IssuerPages}
                             path="/issuer" /> */}
-                {/* <Route exact component={LandingPage} path="/" /> */}
-                <Redirect to={"/"} />
-                {/* <Route component={Footer} path="*" /> */}
-            </BrowserRouter>
-        </main>
-    );
+				{/* <Route exact component={LandingPage} path="/" /> */}
+				<Redirect to={'/'} />
+				{/* <Route component={Footer} path="*" /> */}
+			</BrowserRouter>
+		</main>
+	);
 }
 
 // export const AuthedPrivateRoute = (props: any) => {
