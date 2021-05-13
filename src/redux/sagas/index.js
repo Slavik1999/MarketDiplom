@@ -1,8 +1,10 @@
 import { all } from "redux-saga/effects";
-import signinSaga from "./registrationSaga/signinSaga";
+import signUpSaga from "./registrationSaga/signupSaga";
+import signInSaga from "./registrationSaga/signinSaga";
 
 export default function* rootSaga() {
     yield all([
-        signinSaga(),
+        signUpSaga(),
+        signInSaga(),
     ]);
 }

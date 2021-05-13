@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import { createStyles, makeStyles, Button, Input } from '@material-ui/core';
-import { useDispatch } from "react-redux";
-import {firstSignup} from '../../redux/actions/registartionAction'
+import { useDispatch, useSelector } from "react-redux";
+import {signUpReq} from '../../redux/actions/registartionAction'
+import { useHistory } from 'react-router';
 
 
 const useStyles = makeStyles((theme) =>
@@ -40,7 +41,9 @@ const useStyles = makeStyles((theme) =>
 
 export default function SignUp() {
 	const classes = useStyles();
+	const history = useHistory();
 	const dispatch = useDispatch();
+	const authStoreError = useSelector((store) => store.auth.error);
 	const [formValue, setFormValue] = useState({
 		name: '',
 		email: '',
@@ -58,10 +61,10 @@ export default function SignUp() {
 		
 	}
 
-	const onSubmit = async (e) => {
+	const onSubmit = (e) => {
 		e.preventDefault();
-		
-		await dispatch(firstSignup(formValue));
+		console.log(formValue);
+		dispatch(signUpReq({formValue, history}));
 
 		setFormValue({
 			name: '',
@@ -69,7 +72,6 @@ export default function SignUp() {
 			phone: '',
 			password: ''
 		})
-		console.log(formValue);
 	};
 	// pattern="+375([0-9]{2})[0-9]{3}-[0-9]{2}-[0-9]{2}"
 	return (
@@ -93,12 +95,12 @@ export default function SignUp() {
 						name='password'
 						value={formValue.password}
 						className={classes.input}
-						id="standard-basic"
 						placeholder="Пароль"
 						type="password"
 						onChange={onChange}
 						required
 					/>
+					{authStoreError && <span style={{color: 'red'}}>{authStoreError}</span>}
 					<Button type="submit" variant="contained" color="primary" className={classes.submitButton}>
 						Отправить
 					</Button>

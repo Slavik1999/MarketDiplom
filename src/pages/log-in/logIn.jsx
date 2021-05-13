@@ -1,4 +1,8 @@
 import { createStyles, makeStyles, Button, Input } from '@material-ui/core';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { logInReq } from '../../redux/actions/registartionAction';
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -36,20 +40,44 @@ const useStyles = makeStyles((theme) =>
 
 export default function SignUp() {
 	const classes = useStyles();
+	const history = useHistory();
+	const dispatch = useDispatch();
+	const authStoreError = useSelector((store) => store.auth.error);
+	const [formValue, setFormValue] = useState({
+		email: '',
+		password: ''
+	})
+
+	const onChange = (e) => {
+		setFormValue((prev) => {
+			return {
+				...prev,
+				[e.target.name]: e.target.value
+			}
+		})
+		
+	}
 
 	const onSubmit = (e) => {
 		e.preventDefault();
+		console.log(formValue);
+		dispatch(logInReq({formValue, history}));
 
-		console.log('Submit');
+		setFormValue({
+			name: '',
+			email: '',
+			phone: '',
+			password: ''
+		})
 	};
-
 	return (
 		<div className={classes.root}>
 			<div className={classes.card}>
 				<h2>Войти</h2>
 				<form className={classes.form} onSubmit={onSubmit}>
-					<Input className={classes.input} id="standard-basic" placeholder="Почта" type="text" />
-					<Input className={classes.input} id="standard-basic" placeholder="Пароль" type="password" />
+					<Input className={classes.input} name='email'  placeholder="Почта" type="text" onChange={onChange} />
+					<Input className={classes.input} name='password'  placeholder="Пароль" type="password" onChange={onChange} />
+					{authStoreError && <span style={{color: 'red'}}>{authStoreError}</span>}
 					<Button type="submit" variant="contained" color="primary" className={classes.submitButton}>
 						отправить
 					</Button>

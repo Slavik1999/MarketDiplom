@@ -1,24 +1,29 @@
 import axios from "axios";
-import { takeEvery } from "redux-saga/effects";
-import {SIGN_UP} from "../../constants/types";
+import { put, takeEvery } from "redux-saga/effects";
+import {LOG_IN_REQ, LOG_IN_SUCCESS,LOG_IN_FAIL} from '../../constants/types'
 
-function* signinSaga(action) {
+export function* signInSaga(action) {
     try {
-        console.log(action);
-        const res = yield axios.post('https://afternoon-waters-64991.herokuapp.com/api/auth/registration', action.payload);
-        console.log(res)
-        // if (userData.status >= 200 && userData.status < 300) {
-        //     yield put({ type: type.GET_USERS_SUC, userdata: userData.data });
-        //     console.log(userData);
-        //     localStorage.setItem("token", userData.data.token);
-        //     localStorage.setItem("refreshToken", userData.data.refreshToken);
-        //     localStorage.setItem("expiredTime", userData.data.expiredTime);
-        //     action.payload.history.push("/marketplace");
-        // } else {
-        //     throw userData;
-        // }
+        const res = yield axios.post('https://afternoon-waters-64991.herokuapp.com/api/auth/login', {
+            password: action.payload.formValue.password,
+            username: action.payload.formValue.email
+        }).then(res => res)
+        console.log(res);
+        localStorage.setItem('token', res.data.access_token);
+
+        yield put({
+            type: LOG_IN_SUCCESS,
+            payload: res.data.access_token
+        })
+
+        action.payload.history.push("/catalog")
+
     } catch (e) {
-        console.log("err", e);
+        console.log(e);
+        yield put({
+            type: LOG_IN_FAIL,
+            payload: e.message
+        })
         // yield put({
         //     type: type.GET_USERS_FAILED,
         //     message: e.response.data.error,
@@ -27,7 +32,7 @@ function* signinSaga(action) {
 }
 
 function* watchSignInSaga() {
-    yield takeEvery(SIGN_UP, signinSaga);
+    yield takeEvery(LOG_IN_REQ, signInSaga);
 }
 
 export default watchSignInSaga;
