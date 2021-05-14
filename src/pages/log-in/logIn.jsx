@@ -70,6 +70,7 @@ export default function SignUp() {
 			password: ''
 		})
 	};
+
 	return (
 		<div className={classes.root}>
 			<div className={classes.card}>

@@ -1,7 +1,6 @@
 // import H from "history";
 import {SIGN_UP_REQ, SIGN_UP_FAIL, SIGN_UP_SUCCESS, LOG_IN_REQ} from '../constants/types'
 
-
 export const signUpReq = function (formValue) {
 
     return {
@@ -24,7 +23,6 @@ export const signUpSuccess = function (authToken) {
         payload: authToken,
     };
 };
-
 
 export const signUpFail = function (error) {
 

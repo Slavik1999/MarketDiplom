@@ -4,6 +4,8 @@ import Nav from '../components/nav/nav';
 import LogIn from '../pages/log-in/logIn';
 import SignUp from '../pages/sign-up/SignUp';
 import Catalog from '../pages/catalog/catalog';
+import Auction from "../pages/auction/auction";
+import AuctionBid from "../pages/auction/auctionBid";
 export default function RootRouter() {
 	return (
 		// style={{ position: "relative" }}
@@ -12,6 +14,8 @@ export default function RootRouter() {
 				<Route component={Nav} path="*" />
 				<Route component={LogIn} path="/log-in" />
 				<Route component={SignUp} path="/sign-up" />
+				<Route component={Auction} path="/auction" />
+				<Route component={AuctionBid} path="/auction/:id" />
 				<AuthedPrivateRoute component={Catalog} path='/catalog'/>
 				{/* <NotAuthedPrivateRoute
                             component={ForgotPasswordPages}
@@ -54,7 +58,7 @@ export const AuthedPrivateRoute = (props) => {
     );
 };
 
-export const NotAuthedPrivateRoute = (props: any) => {
+export const NotAuthedPrivateRoute = (props) => {
     const { component: Component, ...rest } = props;
     return (
         <Route
