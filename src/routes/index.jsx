@@ -4,9 +4,10 @@ import Nav from '../components/nav/nav';
 import LogIn from '../pages/log-in/logIn';
 import SignUp from '../pages/sign-up/SignUp';
 import Catalog from '../pages/catalog/catalog';
-import Auction from "../pages/auction/auction";
+import Auctions from "../pages/auction/auctions";
 import AuctionBid from "../pages/auction/auctionBid";
 import Product from '../pages/product/product'
+import Auction from "../pages/auction/auction";
 
 export default function RootRouter() {
 	return (
@@ -14,6 +15,7 @@ export default function RootRouter() {
 		<main>
 			<BrowserRouter>
 				<Route component={Nav} path="*" />
+
 				<NotAuthedPrivateRoute component={LogIn} path="/log-in" exact/>
 				<NotAuthedPrivateRoute component={SignUp} path="/sign-up" exact/>
 				<AuthedPrivateRoute component={Auction} path="/auction" exact/>

@@ -22,7 +22,7 @@ export function* signInSaga(action) {
         console.log(e);
         yield put({
             type: LOG_IN_FAIL,
-            payload: e.message
+            payload: e.response.data.message
         })
         // yield put({
         //     type: type.GET_USERS_FAILED,

@@ -17,7 +17,7 @@ export function* getProductSaga(action) {
         console.log(e);
         yield put({
             type: PRODUCT_REQ_FAIL,
-            payload: e.message
+            payload: e.response.data.message
         })
     }
 }

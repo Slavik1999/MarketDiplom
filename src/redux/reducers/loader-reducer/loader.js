@@ -1,7 +1,7 @@
 const initialState = {
     loader: false,
 };
-const loaderReducer = (state = initialState, action: any) => {
+const loaderReducer = (state = initialState, action) => {
     switch (action.type) {
         // case type.TOGGLE_LOADER:
         //     return {
