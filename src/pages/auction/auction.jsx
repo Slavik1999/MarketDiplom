@@ -74,7 +74,7 @@ const Auction = () => {
     useEffect(() => {
         console.log(storeAuction)
         if (!storeAuction) {
-            console.log(params.id)
+            console.log('id' + params.id)
             dispatch(auctionReq(params.id))
         }
         if (storeAuction && storeAuction.id !== +params.id) {

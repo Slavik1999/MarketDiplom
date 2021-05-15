@@ -58,7 +58,7 @@ export default function Auctions() {
           {currentDate < new Date(auction.bidStart) && `Аукцион начнется ${new Date(auction.bidStart).toLocaleString()}`}
                 {currentDate > new Date(auction.bidStart) && currentDate < new Date(auction.bidEnd) && <>{`Аукцион идет | кол-во ставок: ${auction.bids.length || 0} |`} {showTimeLeft(new Date(auction.bidEnd))}</>}
                 {currentDate > new Date(auction.bidEnd) && `Аукцион закончится | кол-во ставок: ${auction.bids?.length || 0}  `}
-                {currentDate > new Date(auction.bidStart) && auction.bids?.length > 0 && ` | Последняя ставка : $ ${auction.bids[0].bid}`}
+                {currentDate > new Date(auction.bidStart) && auction.bids?.length > 0 && ` | Последняя ставка : $ ${auction.bids[auction.bids.length - 1].bid}`}
       </span>
         )
     }
