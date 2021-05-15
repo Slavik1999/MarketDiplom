@@ -3,13 +3,13 @@ import {
     ListItem,
     ListItemAvatar,
     Avatar,
-    ListItemText, ListItemSecondaryAction, Link, IconButton, Divider
+    ListItemText, ListItemSecondaryAction, IconButton, Divider
 } from '@material-ui/core';
-import {Component, useEffect, useState} from 'react';
+import { useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ViewIcon from '@material-ui/icons/Visibility'
-import {useHistory} from 'react-router';
-import {getAllAuctions, getAllAuctionSuccess, getAllAuctionFail} from '../../redux/actions/auctionAction';
+// import {useHistory} from 'react-router';
+import {getAllAuctions} from '../../redux/actions/auctionAction';
 import {BASE_URL} from "../../constants/constants";
 import {NavLink} from "react-router-dom";
 
@@ -37,10 +37,10 @@ export default function Auction() {
     const showTimeLeft = (date) => {
         let timeLeft = calculateTimeLeft(date)
         return !timeLeft.timeEnd && <span>
-      {timeLeft.days != 0 && `${timeLeft.days} d `}
-            {timeLeft.hours != 0 && `${timeLeft.hours} h `}
-            {timeLeft.minutes != 0 && `${timeLeft.minutes} m `}
-            {timeLeft.seconds != 0 && `${timeLeft.seconds} s`} left
+      {timeLeft.days !== 0 && `${timeLeft.days} d `}
+            {timeLeft.hours !== 0 && `${timeLeft.hours} h `}
+            {timeLeft.minutes !== 0 && `${timeLeft.minutes} m `}
+            {timeLeft.seconds !== 0 && `${timeLeft.seconds} s`} left
     </span>
     }
     const auctionState = (auction)=>{
@@ -54,14 +54,14 @@ export default function Auction() {
         )
     }
 
-    const history = useHistory();
+    // const history = useHistory();
     const dispatch = useDispatch();
-    const auctionStoreError = useSelector((store) => store.auctions.error);
+    // const auctionStoreError = useSelector((store) => store.auctions.error);
     const auctions = useSelector((store) => store.auctions.auctions);
     console.log({auctions})
     useEffect(() => {
         dispatch(getAllAuctions());
-    }, [])
+    }, [dispatch])
 
     return (
         <List dense >

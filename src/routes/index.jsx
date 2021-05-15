@@ -6,17 +6,20 @@ import SignUp from '../pages/sign-up/SignUp';
 import Catalog from '../pages/catalog/catalog';
 import Auction from "../pages/auction/auction";
 import AuctionBid from "../pages/auction/auctionBid";
+import Product from '../pages/product/product'
+
 export default function RootRouter() {
 	return (
 		// style={{ position: "relative" }}
 		<main>
 			<BrowserRouter>
 				<Route component={Nav} path="*" />
-				<Route component={LogIn} path="/log-in" />
-				<Route component={SignUp} path="/sign-up" />
-				<Route component={Auction} path="/auction" />
-				<Route component={AuctionBid} path="/auction/:id" />
-				<AuthedPrivateRoute component={Catalog} path='/catalog'/>
+				<NotAuthedPrivateRoute component={LogIn} path="/log-in" />
+				<NotAuthedPrivateRoute component={SignUp} path="/sign-up" />
+				<AuthedPrivateRoute component={Auction} path="/auction" />
+				<AuthedPrivateRoute component={AuctionBid} path="/auction/:id" />
+				<Route component={Catalog} path='/catalog'/>
+				<Route component={Product} path='/product/:id'/>
 				{/* <NotAuthedPrivateRoute
                             component={ForgotPasswordPages}
                             path="/forgot-password"
@@ -30,7 +33,8 @@ export default function RootRouter() {
                             component={IssuerPages}
                             path="/issuer" /> */}
 				{/* <Route exact component={LandingPage} path="/" /> */}
-				<Redirect to={'/'} />
+                {/* <Redirect from="/" to="/catalog" /> */}
+				{/* <Redirect to='/' />  */}
 				{/* <Route component={Footer} path="*" /> */}
 			</BrowserRouter>
 		</main>
