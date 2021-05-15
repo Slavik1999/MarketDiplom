@@ -1,4 +1,4 @@
-import { ADD_TO_BASKET, REMOVE_FROM_BASKET} from '../../constants/basket'
+import { ADD_TO_BASKET, REMOVE_FROM_BASKET, ADD_QUANTITY_TO_BASKET} from '../../constants/basket'
 
 const initialState = {
     basket: [],
@@ -7,7 +7,7 @@ const initialState = {
 const basketReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TO_BASKET:
-            const newBasket = state.basket.concat();
+            const newBasket = state.basket ? state.basket.concat() : [];
 
             if(newBasket.length){
                 const isProduct = newBasket.some(product => product.id === action.payload.id);
@@ -43,11 +43,24 @@ const basketReducer = (state = initialState, action) => {
                 basket: newBasket
             }
         case REMOVE_FROM_BASKET:
+            const newRemovedBasket = state.basket.filter(product => {
+                return product.id !== action.payload;
+            });
             return {
-                ...state,
-                loader: !state.loader,
+                basket: newRemovedBasket,
             };
-
+        case ADD_QUANTITY_TO_BASKET:
+            const newQuantityBasket = state.basket.concat();
+            
+            newQuantityBasket.forEach(product => {
+                                   if(product.id === action.payload.product.id){
+                                       product.quantity = action.payload.quantity;
+                                       product.cost = action.payload.product.price * action.payload.quantity;
+                                   }
+                               })
+            return {
+                basket: newQuantityBasket
+            }
         default:
             return state;
     }

@@ -62,7 +62,9 @@ export default function Nav() {
 	function calculateBasketQuantity(basket){
 		const quantity = basket.reduce(function (accumulator, product) {
 			return accumulator + product.quantity;
-		}, 0)
+		}, 0);
+
+		console.log(quantity);
 
 		return quantity ? <span className={classes.basketQuantity}>{quantity}</span> : null
 	}
@@ -84,14 +86,14 @@ export default function Nav() {
 					<NavLink to="/catalog" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
 						Каталог
 					</NavLink>
-					<NavLink to="/auction" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
+					<NavLink to="/auctions" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
 						Аукцион
 					</NavLink>
 					<NavLink to="/basket" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
 						<span>Корзина</span>
 						<div className={classes.basketQuantityContainer}>
 							<ShoppingBasketOutlined />
-							{calculateBasketQuantity(basket)}
+							{basket && calculateBasketQuantity(basket)}
 						</div>
 					</NavLink>
 					

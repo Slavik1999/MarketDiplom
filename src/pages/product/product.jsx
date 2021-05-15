@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router"
+import { useParams } from "react-router";
+import { addToBasket } from '../../redux/actions/basketAction';
 import { createStyles, makeStyles } from '@material-ui/core';
 import { productReq, productClear } from '../../redux/actions/productAction';
 import { ShoppingBasketOutlined } from '@material-ui/icons';
@@ -89,7 +90,12 @@ export default function Product(){
             dispatch(productClear());
             dispatch(productReq(params.id))
         }
-    }, [dispatch, params, storeProduct])
+    }, [dispatch, params, storeProduct]);
+
+    function addProductToBasket(e,product){
+        e.stopPropagation();
+        dispatch(addToBasket(product));
+    }
 
     return (
         <div>
@@ -102,7 +108,7 @@ export default function Product(){
                         <span className={classes.cardHeadTitle}>
                             {storeProduct.name}
                         </span>
-                        <ShoppingBasketOutlined className={classes.cardHeadBasket}/>
+                        <ShoppingBasketOutlined className={classes.cardHeadBasket} onClick={(e) => addProductToBasket(e, storeProduct)}/>
                     </div>
                     <img src={`http://afternoon-waters-64991.herokuapp.com/${storeProduct.photo}`} alt='' className={classes.cardImg}/>
                     <div className={classes.cardBottom}>
