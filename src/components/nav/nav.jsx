@@ -1,14 +1,18 @@
 import { AppBar, Toolbar } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { ShoppingBasketOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
 		menuLink: {
-			marginRight: theme.spacing(2),
+			marginRight: '15px',
 			color: '#ffffff',
 			textDecoration: 'none',
-			fontSize: 17
+			fontSize: 17,
+			display: 'flex',
+			alignItems: 'center'
 		},
 		label: {
 			fontSize: 20,
@@ -21,20 +25,47 @@ const useStyles = makeStyles((theme) =>
 		},
 		navLeft: {
 			display: 'flex',
-			alignItems: 'center'
+			alignItems: 'center',
+
 		},
 		navRight: {
 			display: 'flex',
 			alignItems: 'center'
 		},
 		activeMenuLink: {
-			fontWeight: 700
+			fontWeight: 700,
+			display: 'flex',
+			alignItems: 'center' 
+		},
+		basketQuantityContainer: {
+			position: 'relative',
+			display: 'flex',
+			alignItems: 'center',
+			padding: '7px'
+		},
+		basketQuantity:{
+			position: 'absolute',
+			top: 0,
+			right: 0,
+			padding: '3px',
+			backgroundColor: 'rgb(230,0,0)',
+			fontSize: '10px',
+			borderRadius: '45%'
 		}
 	})
 );
 
 export default function Nav() {
 	const classes = useStyles();
+	const basket = useSelector((store) => store.basket.basket);
+
+	function calculateBasketQuantity(basket){
+		const quantity = basket.reduce(function (accumulator, product) {
+			return accumulator + product.quantity;
+		}, 0)
+
+		return quantity ? <span className={classes.basketQuantity}>{quantity}</span> : null
+	}
 
 	return (
 		<AppBar position="static">
@@ -56,9 +87,14 @@ export default function Nav() {
 					<NavLink to="/auction" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
 						Аукцион
 					</NavLink>
-					<NavLink to="/busket" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
-						Корзина
+					<NavLink to="/basket" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
+						<span>Корзина</span>
+						<div className={classes.basketQuantityContainer}>
+							<ShoppingBasketOutlined />
+							{calculateBasketQuantity(basket)}
+						</div>
 					</NavLink>
+					
 				</div>
 				<div className={classes.navRight}>
 					<NavLink to="/log-in" activeClassName={classes.activeMenuLink} className={classes.menuLink}>

@@ -7,6 +7,7 @@ import Catalog from '../pages/catalog/catalog';
 import Auction from "../pages/auction/auction";
 import AuctionBid from "../pages/auction/auctionBid";
 import Product from '../pages/product/product'
+import Basket from '../pages/basket/basket'
 
 export default function RootRouter() {
 	return (
@@ -20,6 +21,7 @@ export default function RootRouter() {
 				<AuthedPrivateRoute component={AuctionBid} path="/auction/:id" exact/>
 				<Route component={Catalog} path='/catalog' exact/>
 				<Route component={Product} path='/product/:id' exact/>
+				<Route component={Basket} path='/basket'/>
 
                 <Route exact path="/" render={() => (
                     <Redirect to="/catalog"/>

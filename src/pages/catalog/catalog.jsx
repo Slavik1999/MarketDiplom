@@ -1,6 +1,7 @@
 import {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { productsReq } from '../../redux/actions/productAction';
+import { addToBasket } from '../../redux/actions/basketAction';
 import { createStyles, makeStyles } from '@material-ui/core';
 import { ShoppingBasketOutlined } from '@material-ui/icons';
 import { useHistory } from 'react-router';
@@ -86,6 +87,11 @@ export default function Catalog(){
         console.log(products)
     }, [products])
 
+    function addProductToBasket(e,product){
+        e.stopPropagation();
+        dispatch(addToBasket(product));
+    }
+
     return (
         <div className={classes.root}>
             {!products && <h1>Loading...</h1>}
@@ -97,7 +103,7 @@ export default function Catalog(){
                             <span className={classes.bottomLineText}>{product.name}</span>
                             <span className={classes.bottomLineText}>$ {product.price}</span>
                         </div>
-                        <ShoppingBasketOutlined  className={classes.bottomLineBasket}/>
+                        <ShoppingBasketOutlined onClick={(e) => addProductToBasket(e, product)}  className={classes.bottomLineBasket}/>
                     </div>
                 </div>
             )}

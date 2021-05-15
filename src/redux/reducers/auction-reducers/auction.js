@@ -7,20 +7,16 @@ const initialState = {
 };
 
 const auctionReducer = (state = initialState, action) => {
-    console.log('auctionReducer')
     switch (action.type) {
         case GET_ALL_AUCTION_REQ:
-            console.log('auctionReducer req')
             return {...state, loading: false}
         case GET_ALL_AUCTION_SUCCESS:
-            console.log('auctionReducer success')
             return {
                 ...state,
                 loading: false,
                 auctions: action.payload
             }
         case GET_ALL_AUCTION_FAILED:
-            console.log('auctionReducer failed')
             return {
                 ...state,
                 loading: false,
