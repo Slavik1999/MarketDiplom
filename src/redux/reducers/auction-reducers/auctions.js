@@ -2,6 +2,7 @@ import {GET_ALL_AUCTION_REQ, GET_ALL_AUCTION_SUCCESS, GET_ALL_AUCTION_FAILED} fr
 
 const initialState = {
     auctions: [],
+    auction: {},
     error: '',
     loading: false
 };

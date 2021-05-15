@@ -1,109 +1,136 @@
-import {
-    List,
-    ListItem,
-    ListItemAvatar,
-    Avatar, Link,
-    ListItemText, ListItemSecondaryAction, IconButton, Divider, makeStyles, createStyles
-} from '@material-ui/core';
-import {Component, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import ViewIcon from '@material-ui/icons/Visibility'
-import {useHistory} from 'react-router';
-import {getAllAuctions, getAllAuctionSuccess, getAllAuctionFail} from '../../redux/actions/auctionsAction';
-import {BASE_URL} from "../../constants/constants";
-import {NavLink} from "react-router-dom";
+import React, {useState, useEffect}  from 'react'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+import {makeStyles} from '@material-ui/core/styles'
+import {read} from './api-auction.js'
+import {Link} from 'react-router-dom'
+import auth from '../auth/auth-helper'
+import Timer from './Timer'
+import Bidding from './Bidding'
+import {getAllAuctions} from "../../redux/actions/auctionsAction";
 
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        root: {
-            width: '70%',
-            margin: '0 auto',
-        },
-    }));
-
-const calculateTimeLeft = (date) => {
-    const difference = date - new Date()
-    let timeLeft = {}
-    if (difference > 0) {
-        timeLeft = {
-            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / 1000 / 60) % 60),
-            seconds: Math.floor((difference / 1000) % 60),
-            timeEnd: false
-        }
-    } else {
-        timeLeft = {timeEnd: true}
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+        margin: 60,
+    },
+    flex:{
+        display:'flex'
+    },
+    card: {
+        padding:'24px 40px 40px'
+    },
+    subheading: {
+        margin: '16px',
+        color: theme.palette.openTitle
+    },
+    description: {
+        margin: '16px',
+        fontSize: '0.9em',
+        color: '#4f4f4f'
+    },
+    price: {
+        padding: '16px',
+        margin: '16px 0px',
+        display: 'flex',
+        backgroundColor: '#93c5ae3d',
+        fontSize: '1.3em',
+        color: '#375a53',
+    },
+    media: {
+        height: 300,
+        display: 'inline-block',
+        width: '100%',
+    },
+    icon: {
+        verticalAlign: 'sub'
+    },
+    link:{
+        color: '#3e4c54b3',
+        fontSize: '0.9em'
+    },
+    itemInfo:{
+        width: '35%',
+        margin: '16px'
+    },
+    bidSection: {
+        margin: '20px',
+        minWidth: '50%'
+    },
+    lastBid: {
+        color: '#303030',
+        margin: '16px',
     }
-    return timeLeft
-}
+}))
 
+export default function Auction ({match}) {
+    const classes = useStyles()
+    const [auction, setAuction] = useState({})
+    const [error, setError] = useState('')
+    const [justEnded, setJustEnded] = useState(false)
 
-export default function Auction() {
-    const currentDate = new Date()
-    const classes = useStyles();
-    const showTimeLeft = (date) => {
-        let timeLeft = calculateTimeLeft(date)
-        return !timeLeft.timeEnd && <span>
-      {timeLeft.days != 0 && `${timeLeft.days} d `}
-            {timeLeft.hours != 0 && `${timeLeft.hours} h `}
-            {timeLeft.minutes != 0 && `${timeLeft.minutes} m `}
-            {timeLeft.seconds != 0 && `${timeLeft.seconds} s`} left
-    </span>
-    }
-    const auctionState = (auction) => {
-        return (
-            <span>
-          {currentDate < new Date(auction.bidStart) && `Auction Starts at ${new Date(auction.bidStart).toLocaleString()}`}
-                {currentDate > new Date(auction.bidStart) && currentDate < new Date(auction.bidEnd) && <>{`Auction is live | ${auction.bids?.length || 0} bids |`} {showTimeLeft(new Date(auction.bidEnd))}</>}
-                {currentDate > new Date(auction.bidEnd) && `Auction Ended | ${auction.bids?.length || 0} bids `}
-                {currentDate > new Date(auction.bidStart) && auction.bids?.length > 0 && ` | Last bid: $ ${auction.bids[0].bid}`}
-      </span>
-        )
-    }
-
-    const history = useHistory();
-    const dispatch = useDispatch();
-    const auctionStoreError = useSelector((store) => store.auctions.error);
-    const auctions = useSelector((store) => store.auctions.auctions);
-    console.log({auctions})
     useEffect(() => {
-        dispatch(getAllAuctions());
-    }, [])
+        dispatch(getAuction(match.params.id));
+    }, [match.params.id])
+
+    const updateBids = (updatedAuction) => {
+        setAuction(updatedAuction)
+    }
+
+    const update = () => {
+        setJustEnded(true)
+    }
+
+    const imageUrl = auction._id
+        ? `/api/auctions/image/${auction._id}?${new Date().getTime()}`
+        : '/api/auctions/defaultphoto'
+    const currentDate = new Date()
 
     return (
         <div className={classes.root}>
-            <List dense>
-                {auctions.map((auction, i) => {
-                    return <span key={i}>
-              <ListItem button>
-                <ListItemAvatar>
-                  <Avatar variant='square' src={BASE_URL + auction.photo}/>
-                </ListItemAvatar>
-                <ListItemText primary={auction.name} secondary={auctionState(auction)}/>
-                <ListItemSecondaryAction>
-                    <NavLink to={location => ({...location, pathname: "/auction/" + auction.id})}>
-                      <IconButton aria-label="View" color="primary">
-                        <ViewIcon/>
-                      </IconButton>
-                    </NavLink>
-                    {/*{ auth.isAuthenticated().user && auth.isAuthenticated().user._id == auction.seller._id &&
-                    <>
-                        <Link to={"/auction/edit/" + auction._id}>
-                            <IconButton aria-label="Edit" color="primary">
-                                <Edit/>
-                            </IconButton>
-                        </Link>
-                        <DeleteAuction auction={auction} onRemove={props.removeAuction}/>
-                    </>
-                    }*/}
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Divider/>
-            </span>
-                })}
-            </List>
-        </div>
+            <Card className={classes.card}>
+                <CardHeader
+                    title={auction.itemName}
+                    subheader={<span>
+                    {currentDate < new Date(auction.bidStart) && 'Auction Not Started'}
+                        {currentDate > new Date(auction.bidStart) && currentDate < new Date(auction.bidEnd) && 'Auction Live'}
+                        {currentDate > new Date(auction.bidEnd) && 'Auction Ended'}
+                    </span>}
+                />
+                <Grid container spacing={6}>
+                    <Grid item xs={5} sm={5}>
+                        <CardMedia
+                            className={classes.media}
+                            image={imageUrl}
+                            title={auction.itemName}
+                        />
+                        <Typography component="p" variant="subtitle1" className={classes.subheading}>
+                            About Item</Typography>
+                        <Typography component="p" className={classes.description}>
+                            {auction.description}</Typography>
+                    </Grid>
 
-    )
+                    <Grid item xs={7} sm={7}>
+                        {currentDate > new Date(auction.bidStart)
+                            ? (<>
+                                <Timer endTime={auction.bidEnd} update={update}/>
+                                { auction.bids.length > 0 &&
+                                <Typography component="p" variant="subtitle1" className={classes.lastBid}>
+                                    {` Last bid: $ ${auction.bids[0].bid}`}
+                                </Typography>
+                                }
+                                { !auth.isAuthenticated() && <Typography>Please, <Link to='/signin'>sign in</Link> to place your bid.</Typography> }
+                                { auth.isAuthenticated() && <Bidding auction={auction} justEnded={justEnded} updateBids={updateBids}/> }
+                            </>)
+                            : <Typography component="p" variant="h6">{`Auction Starts at ${new Date(auction.bidStart).toLocaleString()}`}</Typography>}
+                    </Grid>
+
+                </Grid>
+
+            </Card>
+
+        </div>)
 }

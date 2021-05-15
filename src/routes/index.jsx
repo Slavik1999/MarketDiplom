@@ -4,7 +4,7 @@ import Nav from '../components/nav/nav';
 import LogIn from '../pages/log-in/logIn';
 import SignUp from '../pages/sign-up/SignUp';
 import Catalog from '../pages/catalog/catalog';
-import Auction from "../pages/auction/auction";
+import Auctions from "../pages/auction/auctions";
 import AuctionBid from "../pages/auction/auctionBid";
 export default function RootRouter() {
 	return (
@@ -14,7 +14,7 @@ export default function RootRouter() {
 				<Route component={Nav} path="*" />
 				<Route component={LogIn} path="/log-in" />
 				<Route component={SignUp} path="/sign-up" />
-				<Route exact component={Auction} path="/auction" />
+				<Route exact component={Auctions} path="/auction" />
 				<Route exact component={AuctionBid} path="/auction/:id" />
 				<AuthedPrivateRoute component={Catalog} path='/catalog'/>
 				{/* <NotAuthedPrivateRoute
