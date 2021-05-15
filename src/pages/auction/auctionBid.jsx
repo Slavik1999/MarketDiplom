@@ -4,6 +4,7 @@ import {ENDPOINT} from "../../constants/constants";
 import {Button, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
 
 // const socketOptions = {};
+console.log({ENDPOINT})
 const socket = socketIOClient(ENDPOINT);
 
 const useStyles = makeStyles(theme => ({

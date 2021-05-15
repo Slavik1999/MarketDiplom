@@ -8,6 +8,7 @@ import Auctions from "../pages/auction/auctions";
 import AuctionBid from "../pages/auction/auctionBid";
 import Product from '../pages/product/product'
 import Basket from '../pages/basket/basket'
+import Auction from "../pages/auction/auction";
 
 export default function RootRouter() {
 	return (
@@ -18,8 +19,8 @@ export default function RootRouter() {
 
 				<NotAuthedPrivateRoute component={LogIn} path="/log-in" exact/>
 				<NotAuthedPrivateRoute component={SignUp} path="/sign-up" exact/>
-				<AuthedPrivateRoute component={Auctions} path="/auctions" exact/>
-				<AuthedPrivateRoute component={AuctionBid} path="/auction/:id" exact/>
+				<Route component={Auctions} path="/auctions" exact/>
+				<Route component={Auction} path="/auctions/:id" exact/>
 				<Route component={Catalog} path='/catalog' exact/>
 				<Route component={Product} path='/product/:id' exact/>
 				<Route component={Basket} path='/basket'/>
