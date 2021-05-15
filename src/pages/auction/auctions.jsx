@@ -12,6 +12,7 @@ import {useHistory} from 'react-router';
 import {getAllAuctions, getAllAuctionSuccess, getAllAuctionFail} from '../../redux/actions/auctionsAction';
 import {BASE_URL} from "../../constants/constants";
 import {NavLink} from "react-router-dom";
+import {productsReq} from "../../redux/actions/productAction";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -45,10 +46,10 @@ export default function Auctions() {
     const showTimeLeft = (date) => {
         let timeLeft = calculateTimeLeft(date)
         return !timeLeft.timeEnd && <span>
-      {timeLeft.days != 0 && `${timeLeft.days} d `}
-            {timeLeft.hours != 0 && `${timeLeft.hours} h `}
-            {timeLeft.minutes != 0 && `${timeLeft.minutes} m `}
-            {timeLeft.seconds != 0 && `${timeLeft.seconds} s`} left
+      {timeLeft.days !== 0 && `${timeLeft.days} d `}
+            {timeLeft.hours !== 0 && `${timeLeft.hours} h `}
+            {timeLeft.minutes !== 0 && `${timeLeft.minutes} m `}
+            {timeLeft.seconds !== 0 && `${timeLeft.seconds} s`} left
     </span>
     }
     const auctionState = (auction) => {
@@ -68,21 +69,23 @@ export default function Auctions() {
     const auctions = useSelector((store) => store.auctions.auctions);
     console.log({auctions})
     useEffect(() => {
-        dispatch(getAllAuctions());
-    }, [])
+        if(!auctions.length){
+            dispatch(getAllAuctions());
+        }
+    }, [dispatch,auctions])
 
     return (
         <div className={classes.root}>
             <List dense>
                 {auctions.map((auction, i) => {
                     return <span key={i}>
-              <ListItem button>
+              <ListItem button onClick={() => history.push(`/auctions/${auction.id}`)}>
                 <ListItemAvatar>
                   <Avatar variant='square' src={BASE_URL + auction.photo}/>
                 </ListItemAvatar>
                 <ListItemText primary={auction.name} secondary={auctionState(auction)}/>
                 <ListItemSecondaryAction>
-                    <NavLink to={location => ({...location, pathname: "/auction/" + auction.id})}>
+                    <NavLink to={location => ({...location, pathname: "/auctions/" + auction.id})}>
                       <IconButton aria-label="View" color="primary">
                         <ViewIcon/>
                       </IconButton>

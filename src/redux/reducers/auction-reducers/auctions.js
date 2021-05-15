@@ -1,8 +1,17 @@
-import {GET_ALL_AUCTION_REQ, GET_ALL_AUCTION_SUCCESS, GET_ALL_AUCTION_FAILED} from "../../constants/auctions";
+import {
+    GET_ALL_AUCTION_REQ,
+    GET_ALL_AUCTION_SUCCESS,
+    GET_ALL_AUCTION_FAILED,
+    GET_ONE_AUCTION_REQ,
+    GET_ONE_AUCTION_SUCCESS,
+    GET_ONE_AUCTION_FAILED,
+    AUCTION_CLEAR
+} from "../../constants/auctions";
+import {PRODUCT_CLEAR} from "../../constants/product";
 
 const initialState = {
     auctions: [],
-    auction: {},
+    auction: null,
     error: '',
     loading: false
 };
@@ -27,6 +36,28 @@ const auctionReducer = (state = initialState, action) => {
                 loading: false,
                 error: action.payload
             }
+        case AUCTION_CLEAR:
+            return {
+                ...state,
+                auction: null,
+            };
+        case GET_ONE_AUCTION_REQ:
+            return {
+                ...state,
+                loading: true,
+            };
+        case GET_ONE_AUCTION_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                auction: action.payload,
+            };
+        case GET_ONE_AUCTION_FAILED:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
         default:
             return state;
     }

@@ -53,7 +53,7 @@ export default function Nav() {
 					<NavLink to="/catalog" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
 						Каталог
 					</NavLink>
-					<NavLink to="/auction" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
+					<NavLink to="/auctions" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
 						Аукцион
 					</NavLink>
 					<NavLink to="/busket" activeClassName={classes.activeMenuLink} className={classes.menuLink}>

@@ -1,5 +1,11 @@
 // import H from "history";
-import {GET_ALL_AUCTION_REQ, GET_ALL_AUCTION_SUCCESS, GET_ALL_AUCTION_FAILED} from '../constants/auctions'
+import {
+    GET_ALL_AUCTION_REQ,
+    GET_ALL_AUCTION_SUCCESS,
+    GET_ALL_AUCTION_FAILED,
+    GET_ONE_AUCTION_REQ, GET_ONE_AUCTION_SUCCESS, GET_ONE_AUCTION_FAILED
+} from '../constants/auctions'
+import {AUCTION_CLEAR, AUCTION_REQ, AUCTION_REQ_FAIL, AUCTION_REQ_SUCCESS} from "../constants/auctions";
 
 
 export const getAllAuctions = function () {
@@ -9,10 +15,8 @@ export const getAllAuctions = function () {
 }
 
 export const getAllAuctionSuccess = function (auctions) {
-    console.log('getAllAuctionSuccess')
-    console.log(auctions)
     return {
-        type:GET_ALL_AUCTION_SUCCESS,
+        type: GET_ALL_AUCTION_SUCCESS,
         payload: auctions,
     };
 };
@@ -20,8 +24,39 @@ export const getAllAuctionSuccess = function (auctions) {
 export const getAllAuctionFail = function (error) {
 
     return {
-        type:GET_ALL_AUCTION_FAILED,
+        type: GET_ALL_AUCTION_FAILED,
         payload: error,
+    };
+};
+
+
+export const auctionClear = function (auctionId) {
+
+    return {
+        type: AUCTION_CLEAR,
+    };
+};
+
+export const auctionReq = function (auctionId) {
+    return {
+        type: GET_ONE_AUCTION_REQ,
+        payload: auctionId
+    };
+};
+
+export const auctionReqSuccess = function (auction) {
+
+    return {
+        type: GET_ONE_AUCTION_SUCCESS,
+        payload: auction
+    };
+};
+
+export const auctionReqFail = function (errorMessage) {
+
+    return {
+        type: GET_ALL_AUCTION_FAILED,
+        payload: errorMessage
     };
 };
 

@@ -17,10 +17,6 @@ export function* getAllSaga(action) {
             type: GET_ALL_AUCTION_FAILED,
             payload: e.message
         })
-        // yield put({
-        //     type: type.GET_USERS_FAILED,
-        //     message: e.response.data.error,
-        // });
     }
 }
 
