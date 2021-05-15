@@ -15,28 +15,17 @@ export default function RootRouter() {
 		<main>
 			<BrowserRouter>
 				<Route component={Nav} path="*" />
-				<NotAuthedPrivateRoute component={LogIn} path="/log-in" />
-				<NotAuthedPrivateRoute component={SignUp} path="/sign-up" />
-				<Route exact component={Auctions} path="/auctions" />
-				<Route exact component={Auction} path="/auctions/:id" />
-				<Route component={Catalog} path='/catalog'/>
-				<Route component={Product} path='/product/:id'/>
-				{/* <NotAuthedPrivateRoute
-                            component={ForgotPasswordPages}
-                            path="/forgot-password"
-                        /> */}
-				{/* <Route
-                            exact
-                            component={MainAssetPage}
-                            path="/asset-view/:id"
-                        /> */}
-				{/* <AuthedPrivateRoute
-                            component={IssuerPages}
-                            path="/issuer" /> */}
-				{/* <Route exact component={LandingPage} path="/" /> */}
-                {/* <Redirect from="/" to="/catalog" /> */}
-				{/* <Redirect to='/' />  */}
-				{/* <Route component={Footer} path="*" /> */}
+
+				<NotAuthedPrivateRoute component={LogIn} path="/log-in" exact/>
+				<NotAuthedPrivateRoute component={SignUp} path="/sign-up" exact/>
+				<AuthedPrivateRoute component={Auction} path="/auction" exact/>
+				<AuthedPrivateRoute component={AuctionBid} path="/auction/:id" exact/>
+				<Route component={Catalog} path='/catalog' exact/>
+				<Route component={Product} path='/product/:id' exact/>
+
+                <Route exact path="/" render={() => (
+                    <Redirect to="/catalog"/>
+                )}/>
 			</BrowserRouter>
 		</main>
 	);
