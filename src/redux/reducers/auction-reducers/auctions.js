@@ -5,7 +5,7 @@ import {
     GET_ONE_AUCTION_REQ,
     GET_ONE_AUCTION_SUCCESS,
     GET_ONE_AUCTION_FAILED,
-    AUCTION_CLEAR
+    AUCTION_CLEAR, AUCTION_ADD_BID
 } from "../../constants/auctions";
 import {PRODUCT_CLEAR} from "../../constants/product";
 
@@ -57,6 +57,11 @@ const auctionReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload,
+            };
+        case AUCTION_ADD_BID:
+            return {
+                ...state,
+                auction: {...state.auction, bids: [action.payload,...state.auction.bids] },
             };
         default:
             return state;

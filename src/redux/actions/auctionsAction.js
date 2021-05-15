@@ -3,7 +3,7 @@ import {
     GET_ALL_AUCTION_REQ,
     GET_ALL_AUCTION_SUCCESS,
     GET_ALL_AUCTION_FAILED,
-    GET_ONE_AUCTION_REQ, GET_ONE_AUCTION_SUCCESS, GET_ONE_AUCTION_FAILED
+    GET_ONE_AUCTION_REQ, GET_ONE_AUCTION_SUCCESS, GET_ONE_AUCTION_FAILED, AUCTION_ADD_BID
 } from '../constants/auctions'
 import {AUCTION_CLEAR, AUCTION_REQ, AUCTION_REQ_FAIL, AUCTION_REQ_SUCCESS} from "../constants/auctions";
 
@@ -45,7 +45,6 @@ export const auctionReq = function (auctionId) {
 };
 
 export const auctionReqSuccess = function (auction) {
-
     return {
         type: GET_ONE_AUCTION_SUCCESS,
         payload: auction
@@ -53,10 +52,16 @@ export const auctionReqSuccess = function (auction) {
 };
 
 export const auctionReqFail = function (errorMessage) {
-
     return {
         type: GET_ALL_AUCTION_FAILED,
         payload: errorMessage
+    };
+};
+
+export const auctionAddBid = function (bid) {
+    return {
+        type: AUCTION_ADD_BID,
+        payload: bid
     };
 };
 

@@ -62,7 +62,6 @@ export default function SignUp() {
 		e.preventDefault();
 		console.log(formValue);
 		dispatch(logInReq({formValue, history}));
-
 		setFormValue({
 			name: '',
 			email: '',

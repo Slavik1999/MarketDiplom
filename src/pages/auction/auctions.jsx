@@ -46,19 +46,19 @@ export default function Auctions() {
     const showTimeLeft = (date) => {
         let timeLeft = calculateTimeLeft(date)
         return !timeLeft.timeEnd && <span>
-      {timeLeft.days !== 0 && `${timeLeft.days} d `}
-            {timeLeft.hours !== 0 && `${timeLeft.hours} h `}
-            {timeLeft.minutes !== 0 && `${timeLeft.minutes} m `}
-            {timeLeft.seconds !== 0 && `${timeLeft.seconds} s`} left
+      {timeLeft.days !== 0 && `${timeLeft.days} д `}
+            {timeLeft.hours !== 0 && `${timeLeft.hours} ч `}
+            {timeLeft.minutes !== 0 && `${timeLeft.minutes} м `}
+            {timeLeft.seconds !== 0 && `${timeLeft.seconds} с`} осталось
     </span>
     }
     const auctionState = (auction) => {
         return (
             <span>
-          {currentDate < new Date(auction.bidStart) && `Auction Starts at ${new Date(auction.bidStart).toLocaleString()}`}
-                {currentDate > new Date(auction.bidStart) && currentDate < new Date(auction.bidEnd) && <>{`Auction is live | ${auction.bids?.length || 0} bids |`} {showTimeLeft(new Date(auction.bidEnd))}</>}
-                {currentDate > new Date(auction.bidEnd) && `Auction Ended | ${auction.bids?.length || 0} bids `}
-                {currentDate > new Date(auction.bidStart) && auction.bids?.length > 0 && ` | Last bid: $ ${auction.bids[0].bid}`}
+          {currentDate < new Date(auction.bidStart) && `Аукцион начнется ${new Date(auction.bidStart).toLocaleString()}`}
+                {currentDate > new Date(auction.bidStart) && currentDate < new Date(auction.bidEnd) && <>{`Аукцион идет | кол-во ставок: ${auction.bids.length || 0} |`} {showTimeLeft(new Date(auction.bidEnd))}</>}
+                {currentDate > new Date(auction.bidEnd) && `Аукцион закончится | кол-во ставок: ${auction.bids?.length || 0}  `}
+                {currentDate > new Date(auction.bidStart) && auction.bids?.length > 0 && ` | Последняя ставка : $ ${auction.bids[0].bid}`}
       </span>
         )
     }
@@ -69,10 +69,10 @@ export default function Auctions() {
     const auctions = useSelector((store) => store.auctions.auctions);
     console.log({auctions})
     useEffect(() => {
-        if(!auctions.length){
+        if (!auctions.length) {
             dispatch(getAllAuctions());
         }
-    }, [dispatch,auctions])
+    }, [])
 
     return (
         <div className={classes.root}>
