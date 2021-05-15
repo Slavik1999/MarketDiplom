@@ -1,5 +1,5 @@
 // import H from "history";
-import {GET_ALL_AUCTION_REQ, GET_ALL_AUCTION_SUCCESS, GET_ALL_AUCTION_FAILED} from '../constants/auction'
+import {GET_ALL_AUCTION_REQ, GET_ALL_AUCTION_SUCCESS, GET_ALL_AUCTION_FAILED} from '../constants/auctions'
 
 
 export const getAllAuctions = function () {

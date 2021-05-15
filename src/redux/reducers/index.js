@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import authReducer from "./registration-reducers/registration";
-import auctionReducer from "./auction-reducers/auction";
+import auctionsReducer from "./auction-reducers/auctions";
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    auctions: auctionReducer,
+    auctions: auctionsReducer,
 });
 
 export default rootReducer;

@@ -2,16 +2,24 @@ import {
     List,
     ListItem,
     ListItemAvatar,
-    Avatar,
-    ListItemText, ListItemSecondaryAction, Link, IconButton, Divider
+    Avatar, Link,
+    ListItemText, ListItemSecondaryAction, IconButton, Divider, makeStyles, createStyles
 } from '@material-ui/core';
 import {Component, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ViewIcon from '@material-ui/icons/Visibility'
 import {useHistory} from 'react-router';
-import {getAllAuctions, getAllAuctionSuccess, getAllAuctionFail} from '../../redux/actions/auctionAction';
+import {getAllAuctions, getAllAuctionSuccess, getAllAuctionFail} from '../../redux/actions/auctionsAction';
 import {BASE_URL} from "../../constants/constants";
 import {NavLink} from "react-router-dom";
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            width: '70%',
+            margin: '0 auto',
+        },
+    }));
 
 const calculateTimeLeft = (date) => {
     const difference = date - new Date()
@@ -33,7 +41,7 @@ const calculateTimeLeft = (date) => {
 
 export default function Auction() {
     const currentDate = new Date()
-
+    const classes = useStyles();
     const showTimeLeft = (date) => {
         let timeLeft = calculateTimeLeft(date)
         return !timeLeft.timeEnd && <span>
@@ -43,13 +51,13 @@ export default function Auction() {
             {timeLeft.seconds != 0 && `${timeLeft.seconds} s`} left
     </span>
     }
-    const auctionState = (auction)=>{
+    const auctionState = (auction) => {
         return (
             <span>
           {currentDate < new Date(auction.bidStart) && `Auction Starts at ${new Date(auction.bidStart).toLocaleString()}`}
                 {currentDate > new Date(auction.bidStart) && currentDate < new Date(auction.bidEnd) && <>{`Auction is live | ${auction.bids?.length || 0} bids |`} {showTimeLeft(new Date(auction.bidEnd))}</>}
                 {currentDate > new Date(auction.bidEnd) && `Auction Ended | ${auction.bids?.length || 0} bids `}
-                {currentDate > new Date(auction.bidStart) && auction.bids?.length> 0 && ` | Last bid: $ ${auction.bids[0].bid}`}
+                {currentDate > new Date(auction.bidStart) && auction.bids?.length > 0 && ` | Last bid: $ ${auction.bids[0].bid}`}
       </span>
         )
     }
@@ -64,16 +72,17 @@ export default function Auction() {
     }, [])
 
     return (
-        <List dense >
-            {auctions.map((auction, i) => {
-                return <span key={i}>
+        <div className={classes.root}>
+            <List dense>
+                {auctions.map((auction, i) => {
+                    return <span key={i}>
               <ListItem button>
                 <ListItemAvatar>
                   <Avatar variant='square' src={BASE_URL + auction.photo}/>
                 </ListItemAvatar>
                 <ListItemText primary={auction.name} secondary={auctionState(auction)}/>
                 <ListItemSecondaryAction>
-                    <NavLink to={"/auction/" + auction.id}>
+                    <NavLink to={location => ({...location, pathname: "/auction/" + auction.id})}>
                       <IconButton aria-label="View" color="primary">
                         <ViewIcon/>
                       </IconButton>
@@ -92,7 +101,9 @@ export default function Auction() {
               </ListItem>
               <Divider/>
             </span>
-            })}
-        </List>
+                })}
+            </List>
+        </div>
+
     )
 }

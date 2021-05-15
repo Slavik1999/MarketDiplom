@@ -1,6 +1,6 @@
 import axios from "axios";
 import {put, takeEvery} from "redux-saga/effects";
-import {GET_ALL_AUCTION_REQ, GET_ALL_AUCTION_SUCCESS, GET_ALL_AUCTION_FAILED} from '../../constants/auction'
+import {GET_ALL_AUCTION_REQ, GET_ALL_AUCTION_SUCCESS, GET_ALL_AUCTION_FAILED} from '../../constants/auctions'
 
 export function* getAllSaga(action) {
     try {

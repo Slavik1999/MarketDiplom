@@ -14,8 +14,8 @@ export default function RootRouter() {
 				<Route component={Nav} path="*" />
 				<Route component={LogIn} path="/log-in" />
 				<Route component={SignUp} path="/sign-up" />
-				<Route component={Auction} path="/auction" />
-				<Route component={AuctionBid} path="/auction/:id" />
+				<Route exact component={Auction} path="/auction" />
+				<Route exact component={AuctionBid} path="/auction/:id" />
 				<AuthedPrivateRoute component={Catalog} path='/catalog'/>
 				{/* <NotAuthedPrivateRoute
                             component={ForgotPasswordPages}
@@ -30,7 +30,7 @@ export default function RootRouter() {
                             component={IssuerPages}
                             path="/issuer" /> */}
 				{/* <Route exact component={LandingPage} path="/" /> */}
-				<Redirect to={'/'} />
+				<Redirect to={'/catalog'} />
 				{/* <Route component={Footer} path="*" /> */}
 			</BrowserRouter>
 		</main>
