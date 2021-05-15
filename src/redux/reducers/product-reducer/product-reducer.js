@@ -1,7 +1,7 @@
 import {PRODUCTS_REQ, PRODUCTS_REQ_SUCCESS, PRODUCTS_REQ_FAIL, PRODUCT_REQ, PRODUCT_REQ_SUCCESS, PRODUCT_REQ_FAIL, PRODUCT_CLEAR} from '../../constants/product'
 
 const initialState = {
-    products: [],
+    products: null,
     errorMessage: '',
     product: null,
     loading: false

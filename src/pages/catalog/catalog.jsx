@@ -77,7 +77,7 @@ export default function Catalog(){
     const history = useHistory();
 
     useEffect(() => {
-        if(!products.length){
+        if(!products){
             dispatch(productsReq());
         }
     }, [dispatch, products])
@@ -88,8 +88,8 @@ export default function Catalog(){
 
     return (
         <div className={classes.root}>
-            {!products.length && <h1>Loading...</h1>}
-            {products.length && products.map(product => 
+            {!products && <h1>Loading...</h1>}
+            {products && products.map(product => 
                 <div className={classes.productCard}  key={product.id} onClick={() => history.push(`/product/${product.id}`)}>
                     <img className={classes.productImg} src={`http://afternoon-waters-64991.herokuapp.com/${product.photo}`} alt='cardPhoto'/>
                     <div className={classes.bottomLine}>
