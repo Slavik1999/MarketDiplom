@@ -69,7 +69,7 @@ const Auction = () => {
     const dispatch = useDispatch();
     const [justEnded, setJustEnded] = useState(false);
     const storeAuction = useSelector((store) => store.auctions.auction);
-    const storeError = useSelector((store) => store.auctions.error);
+    // const storeError = useSelector((store) => store.auctions.error);
 
     useEffect(() => {
         console.log(storeAuction)
