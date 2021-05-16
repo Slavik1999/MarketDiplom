@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { clearBasket } from '../../redux/actions/basketAction';
+import { sendOrder } from '../../redux/actions/ordersActions';
 import { createStyles, makeStyles, Button, Input } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -54,7 +55,7 @@ export default function BasketCheckout({toggleShowCheckout}){
         city: ''
     })
     const dispatch = useDispatch();
-    // const basket = useSelector((store) => store.basket.basket);
+    const basket = useSelector((store) => store.basket.basket);
 
     
     const onChange = (e) => {
@@ -76,8 +77,10 @@ export default function BasketCheckout({toggleShowCheckout}){
             phone: '',
             city: ''
         })
+
         toggleShowCheckout();
         dispatch(clearBasket());
+        dispatch(sendOrder({formValue, basket}))
     }
 
     return (

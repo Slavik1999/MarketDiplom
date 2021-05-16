@@ -131,6 +131,7 @@ export default function Bakset(){
 
         if(!basket.length){
             setIsShowCheckout(false);
+            setTotal(0);
         }
     }, [basket]);
 
@@ -151,7 +152,7 @@ export default function Bakset(){
             <div className={classes.card}>
                 <h3>Магазин покупок</h3>
                 <div className={classes.cardItemsContainer}>
-                {basket && basket.map(product => (
+                {basket.map(product => (
                     <div key={product.id} className={classes.cardItem}>
                         <div>
                             <img className={classes.cardItemImg} src={`http://afternoon-waters-64991.herokuapp.com/${product.photo}`} alt=''/>
