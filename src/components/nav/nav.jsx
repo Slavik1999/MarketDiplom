@@ -75,7 +75,10 @@ export default function Nav() {
 	function rightNavRoutes(token){
 		return token ? 
 		<>
-			<NavLink to="/my-shops" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
+			<NavLink to="/my-products" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
+				Мои продукты
+			</NavLink>
+			<NavLink to="/my-orders" activeClassName={classes.activeMenuLink} className={classes.menuLink}>
 				Мои покупки
 			</NavLink>
 			<NavLink to="/my-auctions" activeClassName={classes.activeMenuLink} className={classes.menuLink}>

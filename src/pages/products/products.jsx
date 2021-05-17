@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/actions/productsActions';
 import { createStyles, makeStyles, Button } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import {BASE_URL} from '../../constants/constants'
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -80,7 +81,8 @@ export default function Products(){
     const classes = useStyles();
     const dispatch = useDispatch();
     const products = useSelector((store) => store.userProducts.products);
-
+    const history = useHistory();
+    
     useEffect(() => {
         dispatch(fetchProducts());
     }, [ dispatch])
@@ -89,7 +91,7 @@ export default function Products(){
         <div className={classes.card}>
             <div className={classes.cardHeader}>
                 <h3>Продукты</h3>
-                <Button variant="contained" color='primary'>+ NEW PRODUCT</Button>
+                <Button variant="contained" color='primary' onClick={() => history.push('/new-product')}>+ NEW PRODUCT</Button>
             </div>
             <div className={classes.cardItemsContainer}>
                 {products.map(product => (
