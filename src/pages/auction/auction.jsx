@@ -7,6 +7,7 @@ import {BASE_URL} from "../../constants/constants";
 import Timer from "./Timer";
 import {makeStyles} from "@material-ui/core/styles";
 import AuctionBid from "./auctionBid";
+import {NavLink} from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -92,7 +93,7 @@ const Auction = () => {
     }
 
     const currentDate = new Date()
-
+    console.log(storeError)
     return (
         <div className={classes.root}>
             {storeAuction &&
@@ -128,7 +129,7 @@ const Auction = () => {
                                 </Typography>
                                 }
                                 {!localStorage.getItem('token') &&
-                                <Typography>Пожалуйста, <Link to='/login'>авторизируйтесь</Link> для ставки.</Typography>}
+                                <Typography>Пожалуйста, <NavLink to='/log-in'>авторизируйтесь</NavLink> для ставки.</Typography>}
                                 {localStorage.getItem('token') &&
                                 <AuctionBid auction={storeAuction} justEnded={justEnded} updateBids={updateBids}/>}
                             </>)
