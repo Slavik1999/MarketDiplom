@@ -1,9 +1,9 @@
 import axios from "axios";
 import {put, takeEvery} from "redux-saga/effects";
-import {SEND_ORDER, SEND_ORDER_SUCCESS, SEND_ORDER_FAIL} from '../../constants/orders'
+import { SEND_ORDER, SEND_ORDER_SUCCESS, SEND_ORDER_FAIL, FETCH_ORDERS, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_FAIL } from '../../constants/orders'
 import {BASE_URL} from "../../../constants/constants";
 
-export function* ordersSaga(action) {
+export function* createOrderSaga(action) {
     try {
         const newBasketArr = [];
 
@@ -39,8 +39,35 @@ export function* ordersSaga(action) {
     }
 }
 
+export function* fetchOrdersSaga(action) {
+    try {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+          
+        const res = yield axios.get(`${BASE_URL}api/users/orders`,
+        {
+            headers: headers
+        }).then(res => res)
+        
+        yield put({
+            type: FETCH_ORDERS_SUCCESS,
+            payload: res.data
+        })
+        
+    } catch (e) {
+        console.log(e);
+        yield put({
+            type: FETCH_ORDERS_FAIL,
+            payload: e.response.data.message
+        })
+    }
+}
+
 function* watchGetAllSaga() {
-    yield takeEvery(SEND_ORDER, ordersSaga);
+    yield takeEvery(SEND_ORDER, createOrderSaga);
+    yield takeEvery(FETCH_ORDERS, fetchOrdersSaga);
 }
 
 export default watchGetAllSaga;
