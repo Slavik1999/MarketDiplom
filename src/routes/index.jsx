@@ -10,6 +10,7 @@ import Basket from '../pages/basket/basket'
 import Auction from "../pages/auction/auction";
 import Products from "../pages/products/products";
 import NewProduct from "../pages/new-product/new-product";
+import Orders from "../pages/orders/orders"
 
 export default function RootRouter() {
 	return (
@@ -27,7 +28,8 @@ export default function RootRouter() {
 				<Route component={Basket} path='/basket'/>
 				<Route component={Products} path='/my-products'/>
 				<Route component={NewProduct} path='/new-product'/>
-
+				<Route component={Orders} path='/my-orders'/>
+                
                 <Route exact path="/" render={() => (
                     <Redirect to="/catalog"/>
                 )}/>

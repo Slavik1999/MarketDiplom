@@ -1,4 +1,4 @@
-import { SEND_ORDER_SUCCESS, SEND_ORDER_FAIL } from '../../constants/orders'
+import { SEND_ORDER_SUCCESS, SEND_ORDER_FAIL, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_FAIL } from '../../constants/orders'
 
 const initialState = {
     orders: [],
@@ -15,6 +15,16 @@ const ordersReducer = (state = initialState, action) => {
                 orders: newSendOrder,
             };
         case SEND_ORDER_FAIL:
+            return {
+                ...state,
+                errorMessage: action.payload,
+            }; 
+        case FETCH_ORDERS_SUCCESS:
+            return {
+                ...state,
+                orders: action.payload,
+            };
+        case FETCH_ORDERS_FAIL:
             return {
                 ...state,
                 errorMessage: action.payload,
