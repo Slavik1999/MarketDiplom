@@ -1,0 +1,167 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../../redux/actions/productsActions';
+import { createStyles, makeStyles, Button, Input } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import {BASE_URL} from '../../constants/constants'
+import { useHistory } from 'react-router';
+
+const useStyles = makeStyles((theme) =>
+	createStyles({
+        root: {
+            width: '60%',
+            boxShadow: '0px 10px 8px 0px rgba(50, 50, 50, 0.25)',
+            padding: '40px',
+            boxSizing: 'border-box',
+            margin: '0 auto'
+        },
+        form: {
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        },
+        cardButtons: {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: '20px',
+        },
+        input: {
+            marginTop: '20px',
+            width: '100%',
+            padding: '5px'
+        },
+        imgInputContainer: {
+            position: 'relative',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            height: '40px'
+        },
+        imgInputLabel: {
+            position: 'absolute',
+            top: '0',
+            zIndex: 1
+        },
+        imgPreviewClose: {
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            "&:hover": {
+                cursor: 'pointer'
+            }
+        },
+        inputFile: {
+            height: '36px',
+            width: '194px',
+            opacity: 0,
+            zIndex: 2,
+            "&:hover": {
+                cursor: 'pointer'
+            }
+        }
+    })
+)
+
+export default function NewProduct(){
+    const classes = useStyles();
+    const [formValue, setFormValue] = useState({
+        name: '',
+        description: '',
+        quantity: '',
+        price: 0
+    })
+    const [img, setImg] = useState({
+        image: null,
+        imagePreview: null,
+        file: null
+    })
+    
+    const onChange = (e) => {
+		setFormValue((prev) => {
+			return {
+				...prev,
+				[e.target.name]: e.target.value
+			}
+		})
+	}
+
+    const imageHandler = (e) => {
+		if(e.target.files[0]){
+            let reader = new FileReader();
+            let newFile = e.target.files[0];
+            reader.readAsDataURL(newFile);
+
+            reader.onloadend = () => {
+                setImg({
+                    image: newFile,
+                    imagePreview: reader.result
+                })
+            };
+        }
+
+        else {
+            removeImage();
+        }
+	};
+
+    const removeImage = (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+
+		setImg({
+			image: null,
+			imagePreview: null
+		});
+	};
+
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        console.log(formValue);
+
+        setFormValue({
+            name: '',
+            description: '',
+            quantity: '',
+            price: 0
+        })
+    }
+
+    return (
+        <div  className={classes.root}>
+            <h3 style={{textAlign: 'center'}}>Новый Продукт</h3>
+            <form className={classes.form} onSubmit={onSubmit}>
+                <div className={classes.imgInputContainer}>
+                    <label htmlFor='file' className={classes.imgInputLabel}>
+                        <Button color='secondary' variant="contained">Загрузите картинку</Button>
+                    </label>
+                    <input  className={classes.inputFile} id='file' type='file' onChange={imageHandler} placeholder='Загрузите картинку' required>
+                    </input>
+                </div>
+                {img.imagePreview && (  
+                        <div className={classes.imgPreview}>
+                            <img src={img.imagePreview} alt="" />
+                            <span className="image-name">
+                                {img.image.name.slice(0, 8)}
+                            </span>
+                            <span className={classes.imgPreviewClose} onClick={(e) => removeImage(e)}>X</span>
+                        </div>
+                        
+                    )}
+                <Input className={classes.input} value={formValue.name} placeholder="Имя" name='name' type="text" onChange={onChange}  required />
+                <Input className={classes.input} value={formValue.description} placeholder="Описание" name='description' type="text" onChange={onChange}  required />
+                <Input className={classes.input} value={formValue.quantity} placeholder="Количество" name='quantity' type="text" onChange={onChange}  required />
+                <Input className={classes.input} value={formValue.price} placeholder="Цена" name='price' type="number" onChange={onChange}  required />
+                <div className={classes.cardButtons}>
+                    <Button  variant="contained" type='submit' color='primary'>Отправить</Button>
+                    <Button  variant="contained">Отмена</Button>
+                </div>
+            </form>
+        </div>
+    )
+}
