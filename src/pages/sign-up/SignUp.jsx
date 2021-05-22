@@ -114,7 +114,11 @@ export default function SignUp() {
 					</Button>
 					<div className={classes.error}>
 						<ul>
-							{authStoreError && authStoreError.map(err => <li key={err} className={classes.errorText}>{err}</li>)}
+							{authStoreError &&
+							(Array.isArray(authStoreError) ? authStoreError.map(err => <li key={err}
+																		 className={classes.errorText}>{err}</li>) :
+								<li className={classes.errorText}>{authStoreError}</li>)
+							}
 						</ul>
                 	</div>
 				</form>

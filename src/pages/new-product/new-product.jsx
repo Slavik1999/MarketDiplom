@@ -202,7 +202,11 @@ export default function NewProduct(){
                 </div>
                 <div className={classes.error}>
                     <ul>
-                        {error && error.map(err => <li key={err} className={classes.errorText}>{err}</li>)}
+                        {error &&
+                        (Array.isArray(error) ? error.map(err => <li key={err}
+                                                                     className={classes.errorText}>{err}</li>) :
+                            <li className={classes.errorText}>{error}</li>)
+                        }
                     </ul>
                 </div>
             </form>
