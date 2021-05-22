@@ -1,12 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOrders } from '../../redux/actions/ordersActions';
-import { createStyles, makeStyles, Button } from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core';
 import { useEffect } from 'react';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-
-import {BASE_URL} from '../../constants/constants'
-import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -46,6 +41,12 @@ const useStyles = makeStyles((theme) =>
             justifyContent: 'space-between',
             backgroundColor: '#ffffff',
         },
+        cardItemMain:{
+            display: 'flex', 
+            flexDirection: 'column',
+            height: '100%',
+            justifyContent: 'space-around'
+        },
         cardItemImg: {
             width: '30%',
             objectFit: 'cover',
@@ -57,21 +58,15 @@ const useStyles = makeStyles((theme) =>
             flexDirection: 'column', 
             justifyContent: 'space-between',
         },
-        cardItemName: {
-            color: 'blue', 
-            fontWeight: 500, 
-            marginBottom: '20px'
+        cardItemDate: {
+
         },
-        cardItemQuantity: {
-            color: 'gray', 
-            fontWeight: 500
+        cardItemTotal: {
+
         },
-        cardItemButtons: {
-            display: 'flex'
-        },
-        cardItemButtonsEdit: {
-            color: 'blue', 
-            marginRight: '10px'
+        text: {
+            fontWeight: 500,
+            color: 'gray'
         }
     })
 )
@@ -81,32 +76,39 @@ export default function Products(){
     const classes = useStyles();
     const dispatch = useDispatch();
     const orders = useSelector((store) => store.orders.orders);
-    const history = useHistory();
     
     useEffect(() => {
         dispatch(fetchOrders());
-        console.log(orders);
     }, [ dispatch])
+
+
+    function transformDate(date){
+        const newDate = new Date(date);
+        const month = newDate.getMonth() >= 10 ? newDate.getMonth() + 1 : '0' + (newDate.getMonth() + 1)
+
+        return `${newDate.getDate()}/${month}/${newDate.getFullYear()}`
+    }
 
     return (
         <div className={classes.card}>
             <div className={classes.cardHeader}>
                 <h3>Покупки</h3>
-                {/* <Button variant="contained" color='primary' onClick={() => history.push('/new-product')}>+ NEW PRODUCT</Button> */}
             </div>
+            {orders && !orders.length && <h1 style={{margin: '40px'}}>Нету заказов</h1>}
             <div className={classes.cardItemsContainer}>
-                {orders.map(product => (
-                    <div key={product.id} className={classes.cardItem}>
-                        <div style={{display: 'flex', alignItems: 'center'}}>
-                            <img  className={classes.cardItemImg} src={`${BASE_URL}${product.photo}`} alt=''/>
+                {orders.map(order => (
+                    <div key={order.id} className={classes.cardItem}>
+                        <div className={classes.cardItemMain} >
+                            <div className={classes.cardItemDate}>
+                                <span className={classes.text}>Дата покупки: {transformDate(order.orderDate)}</span>
+                            </div>
                             <div className={classes.cardItemInfo}>
-                                <span className={classes.cardItemName}>{product.name}</span>
-                                <span className={classes.cardItemQuantity}>Количество: {product.quantity} | Цена: ${product.price}</span>
+                                <span className={classes.text}>Адрес: {order.country}, {order.city}, {order.address}</span>
+                                <span className={classes.text}>Телефон: {order.phone}</span>
                             </div>
                         </div>
-                        <div className={classes.cardItemButtons}>
-                            <EditIcon className={classes.cardItemButtonsEdit}/>
-                            <DeleteIcon style={{color: 'red'}}/>
+                        <div className={classes.cardItemTotal}>
+                            <span className={classes.text}>Сумма заказа: $ {order.totalSum}</span>
                         </div>
                     </div>
                 ))}

@@ -67,7 +67,6 @@ export default function Nav() {
 			return accumulator + product.quantity;
 		}, 0);
 
-		console.log(quantity);
 
 		return quantity ? <span className={classes.basketQuantity}>{quantity}</span> : null
 	}

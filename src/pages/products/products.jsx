@@ -91,8 +91,9 @@ export default function Products(){
         <div className={classes.card}>
             <div className={classes.cardHeader}>
                 <h3>Продукты</h3>
-                <Button variant="contained" color='primary' onClick={() => history.push('/new-product')}>+ NEW PRODUCT</Button>
+                <Button variant="contained" color='primary' onClick={() => history.push('/new-product')}>+ НОВЫЙ ПРОДУКТ</Button>
             </div>
+            {products && !products.length && <h1 style={{margin: '40px'}}>Нету продуктов</h1>}
             <div className={classes.cardItemsContainer}>
                 {products.map(product => (
                     <div key={product.id} className={classes.cardItem}>

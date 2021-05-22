@@ -1,6 +1,7 @@
 import axios from "axios";
 import {put, takeEvery} from "redux-saga/effects";
 import { SEND_ORDER, SEND_ORDER_SUCCESS, SEND_ORDER_FAIL, FETCH_ORDERS, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_FAIL } from '../../constants/orders'
+import { CLEAR_BASKET } from '../../constants/basket'
 import {BASE_URL} from "../../../constants/constants";
 
 export function* createOrderSaga(action) {
@@ -29,6 +30,11 @@ export function* createOrderSaga(action) {
             type: SEND_ORDER_SUCCESS,
             payload: res.data
         })
+        yield put({
+            type: CLEAR_BASKET,
+        })
+        action.payload.clearForm();
+        action.payload.toggleShowCheckout();
         
     } catch (e) {
         console.log(e);

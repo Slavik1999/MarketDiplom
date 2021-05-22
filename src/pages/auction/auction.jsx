@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {auctionReq, auctionClear, auctionAddBid} from "../../redux/actions/auctionsAction";
 import {useParams} from "react-router";
-import {Card, CardHeader, CardMedia, Grid, Link, Typography} from "@material-ui/core";
+import {Card, CardHeader, CardMedia, Grid, Typography} from "@material-ui/core";
 import {BASE_URL} from "../../constants/constants";
 import Timer from "./Timer";
 import {makeStyles} from "@material-ui/core/styles";

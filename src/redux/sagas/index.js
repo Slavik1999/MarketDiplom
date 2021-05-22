@@ -7,6 +7,7 @@ import getProductSaga from "./productSagas/getProdutctSaga";
 import getOneSaga from "./auctionSaga/getOneSaga";
 import ordersSaga from "./ordersSaga/ordersSaga";
 import productsSaga from "./productsSaga/productsSaga";
+import profileSaga from "./profileSaga/profileSaga";
 
 export default function* rootSaga() {
     yield all([
@@ -17,6 +18,7 @@ export default function* rootSaga() {
         getProductsSaga(),
         getProductSaga(),
         ordersSaga(),
-        productsSaga()
+        productsSaga(),
+        profileSaga()
     ]);
 }
