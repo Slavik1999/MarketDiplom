@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { createProduct } from '../../redux/actions/productsActions';
 import { createStyles, makeStyles, Button, Input } from '@material-ui/core';
-import { createRef, useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
 
 import { useHistory } from 'react-router';
 
