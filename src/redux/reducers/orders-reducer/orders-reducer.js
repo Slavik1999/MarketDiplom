@@ -13,6 +13,7 @@ const ordersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 orders: newSendOrder,
+                errorMessage: ''
             };
         case SEND_ORDER_FAIL:
             return {
@@ -23,6 +24,7 @@ const ordersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 orders: action.payload,
+                errorMessage: ''
             };
         case FETCH_ORDERS_FAIL:
             return {

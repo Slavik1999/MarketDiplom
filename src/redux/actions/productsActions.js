@@ -7,10 +7,14 @@ export const fetchProducts = function () {
     };
 };
 
-export const createProduct = function (newProduct) {
+export const createProduct = function (newProduct, history, clearForm) {
 
     return {
         type:CREATE_PRODUCT,
-        payload: newProduct
+        payload: {
+            newProduct,
+            history,
+            clearForm
+        }
     };
 };

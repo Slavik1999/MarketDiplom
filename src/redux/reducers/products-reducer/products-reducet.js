@@ -11,6 +11,7 @@ const productsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: action.payload,
+                errorMessage: ''
             };
         case FETCH_PRODUCTS_FAIL:
             return {
@@ -24,6 +25,7 @@ const productsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: newProducts,
+                errorMessage: ''
             };
         case CREATE_PRODUCT_FAIL:
             return {

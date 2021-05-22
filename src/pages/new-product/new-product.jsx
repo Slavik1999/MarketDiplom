@@ -1,7 +1,7 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createProduct } from '../../redux/actions/productsActions';
 import { createStyles, makeStyles, Button, Input } from '@material-ui/core';
-import { createRef, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useHistory } from 'react-router';
 
@@ -72,6 +72,13 @@ const useStyles = makeStyles((theme) =>
             "&:hover": {
                 cursor: 'pointer'
             }
+        },
+        error: {
+            width: '100%',
+        },
+        errorText: {
+            color: 'red',
+            fontSize: '16px'
         }
     })
 )
@@ -81,6 +88,8 @@ export default function NewProduct(){
     const dispatch = useDispatch();
     const history = useHistory();
     const form = useRef(null)
+    const error = useSelector((store) => store.userProducts.errorMessage)
+    
     const [formValue, setFormValue] = useState({
         name: '',
         description: '',
@@ -130,6 +139,15 @@ export default function NewProduct(){
 		});
 	};
 
+    function clearForm(){
+        setFormValue({
+            name: '',
+            description: '',
+            quantity: '',
+            price: 0
+        });
+    }
+
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -143,21 +161,15 @@ export default function NewProduct(){
             formData.append(key, newProduct[key]);
         }
 
-        dispatch(createProduct(formData));
+        dispatch(createProduct(formData, history, clearForm));
 
-        setFormValue({
-            name: '',
-            description: '',
-            quantity: '',
-            price: 0
-        });
+
 
         setImg({
             image: null,
             imagePreview: null
         })
 
-        history.push('/my-products')
     }
 
     return (
@@ -168,7 +180,7 @@ export default function NewProduct(){
                     <label htmlFor='file' className={classes.imgInputLabel}>
                         <Button color='secondary' variant="contained">Загрузите картинку</Button>
                     </label>
-                    <input  className={classes.inputFile}  id='file' type='file' onChange={imageHandler} placeholder='Загрузите картинку' required>
+                    <input  className={classes.inputFile}  id='file' type='file' onChange={imageHandler} placeholder='Загрузите картинку' required >
                     </input>
                 </div>
                 {img.imagePreview && (  
@@ -179,15 +191,19 @@ export default function NewProduct(){
                             </span>
                             <span className={classes.imgPreviewClose} onClick={(e) => removeImage(e)}>X</span>
                         </div>
-                        
                     )}
                 <Input className={classes.input} value={formValue.name} placeholder="Имя" name='name' type="text" onChange={onChange}  required />
-                <Input className={classes.input} value={formValue.description} placeholder="Описание" name='description' type="text" onChange={onChange}  required />
-                <Input className={classes.input} value={formValue.quantity} placeholder="Количество" name='quantity' type="number" onChange={onChange}  required />
-                <Input className={classes.input} value={formValue.price} placeholder="Цена" min={0} name='price' type="number" onChange={onChange}  required />
+                <Input className={classes.input} value={formValue.description} placeholder="Описание" name='description' type="text" onChange={onChange} required  />
+                <Input className={classes.input} value={formValue.quantity} placeholder="Количество" name='quantity' type="number" onChange={onChange} required  />
+                <Input className={classes.input} value={formValue.price} placeholder="Цена" min={0} name='price' type="number" onChange={onChange} required  />
                 <div className={classes.cardButtons}>
                     <Button  variant="contained" type='submit' color='primary'>Отправить</Button>
                     <Button  variant="contained">Отмена</Button>
+                </div>
+                <div className={classes.error}>
+                    <ul>
+                        {error && error.map(err => <li key={err} className={classes.errorText}>{err}</li>)}
+                    </ul>
                 </div>
             </form>
         </div>

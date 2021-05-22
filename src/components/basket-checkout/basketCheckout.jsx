@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { clearBasket } from '../../redux/actions/basketAction';
 import { sendOrder } from '../../redux/actions/ordersActions';
 import { createStyles, makeStyles, Button, Input } from '@material-ui/core';
 import { useState } from 'react';
@@ -43,6 +42,13 @@ const useStyles = makeStyles((theme) =>
         button: {
 
         },
+        error: {
+            width: '100%',
+        },
+        errorText: {
+            color: 'red',
+            fontSize: '16px'
+        }
     })
 )
 
@@ -56,7 +62,7 @@ export default function BasketCheckout({toggleShowCheckout}){
     })
     const dispatch = useDispatch();
     const basket = useSelector((store) => store.basket.basket);
-
+    const error = useSelector((store) => store.orders.errorMessage)
     
     const onChange = (e) => {
 		setFormValue((prev) => {
@@ -68,19 +74,19 @@ export default function BasketCheckout({toggleShowCheckout}){
 		
 	}
 
-    function submit(e){
-        e.preventDefault();
-
+    function clearForm(){
         setFormValue({
             country: '',
             address: '',
             phone: '',
             city: ''
         })
+    }
 
-        toggleShowCheckout();
-        dispatch(clearBasket());
-        dispatch(sendOrder({formValue, basket}))
+    function submit(e){
+        e.preventDefault();     
+
+        dispatch(sendOrder({formValue, basket, toggleShowCheckout, clearForm}))
     }
 
     return (
@@ -89,8 +95,8 @@ export default function BasketCheckout({toggleShowCheckout}){
             <h3>Покупка</h3>
             <form onSubmit={submit}>
                 <Input className={classes.input} value={formValue.country} placeholder="Страна" name='country' type="text" onChange={onChange}  required />
-                <Input className={classes.input} value={formValue.city} placeholder="Город" name='city' type="text" onChange={onChange}  required />
-                <Input className={classes.input} value={formValue.address} placeholder="Адрес" name='address' type="text" onChange={onChange} required />
+                <Input className={classes.input} value={formValue.city} placeholder="Город" name='city' type="text" onChange={onChange} required  />
+                <Input className={classes.input} value={formValue.address} placeholder="Адрес" name='address' type="text" onChange={onChange} required  />
                 <Input
                     value={formValue.phone}
                     name='phone'
@@ -105,6 +111,11 @@ export default function BasketCheckout({toggleShowCheckout}){
                     <Button type="submit" variant="contained" color="secondary" className={classes.button}>
                         Купить
                     </Button>
+                </div>
+                <div className={classes.error}>
+                    <ul>
+                        {error && error.map(err => <li key={err} className={classes.errorText}>{err}</li>)}
+                    </ul>
                 </div>
             </form>
         </div>

@@ -176,9 +176,12 @@ export default function Bakset(){
                 <div className={classes.cardFooter}>
                     <span className={classes.cardFooterTotal}>Total: ${total}</span>
                     <div className={classes.cardFooterButtons}>
-                        {!isShowCheckout && ( <Button variant="contained" color="secondary" disabled={!basket || !basket.length} onClick={toggleShowCheckout} className={classes.cardFooterButton}>
+                        {localStorage.getItem('token') && (!isShowCheckout && ( <Button variant="contained" color="secondary" disabled={!basket || !basket.length} onClick={toggleShowCheckout} className={classes.cardFooterButton}>
                             Покупка
-                        </Button>)}
+                        </Button>))}
+                        {!localStorage.getItem('token') && <Button variant="contained" color="secondary" onClick={() => history.push('log-in')} className={classes.cardFooterButton}>
+                            Авторизироваться для покупки
+                        </Button>}
                         <Button variant="contained" onClick={() => history.push('/catalog')}>
                             Продолжить покупки
                         </Button>

@@ -36,7 +36,7 @@ export function* createProductSaga(action) {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
           
-        const res = yield axios.post(`${BASE_URL}api/products`, action.payload,
+        const res = yield axios.post(`${BASE_URL}api/products`, action.payload.newProduct,
         {
             headers: headers
         }).then(res => res)
@@ -46,6 +46,8 @@ export function* createProductSaga(action) {
             type: CREATE_PRODUCT_SUCCESS,
             payload: res.data
         })
+        action.payload.clearForm();
+        action.payload.history.push('/my-products')
         
     } catch (e) {
         console.log(e);
