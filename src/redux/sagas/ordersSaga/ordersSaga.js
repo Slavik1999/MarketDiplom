@@ -1,6 +1,6 @@
 import axios from "axios";
 import {put, takeEvery} from "redux-saga/effects";
-import { SEND_ORDER, SEND_ORDER_SUCCESS, SEND_ORDER_FAIL, FETCH_ORDERS, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_FAIL } from '../../constants/orders'
+import { SEND_ORDER, SEND_ORDER_SUCCESS, SEND_ORDER_FAIL, FETCH_ORDERS, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_FAIL, FETCH_ORDER, FETCH_ORDER_SUCCESS, FETCH_ORDER_FAIL } from '../../constants/orders'
 import { CLEAR_BASKET } from '../../constants/basket'
 import {BASE_URL} from "../../../constants/constants";
 
@@ -71,9 +71,36 @@ export function* fetchOrdersSaga(action) {
     }
 }
 
+export function* fetchOrderSaga(action) {
+    try {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+          
+        const res = yield axios.get(`${BASE_URL}api/orders/${action.payload}`,
+        {
+            headers: headers
+        }).then(res => res)
+
+        yield put({
+            type: FETCH_ORDER_SUCCESS,
+            payload: res.data
+        })
+        
+    } catch (e) {
+        console.log(e);
+        yield put({
+            type: FETCH_ORDER_FAIL,
+            payload: e.response.data.message
+        })
+    }
+}
+
 function* watchGetAllSaga() {
     yield takeEvery(SEND_ORDER, createOrderSaga);
     yield takeEvery(FETCH_ORDERS, fetchOrdersSaga);
+    yield takeEvery(FETCH_ORDER, fetchOrderSaga);
 }
 
 export default watchGetAllSaga;

@@ -1,8 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOrders } from '../../redux/actions/ordersActions';
-import { createStyles, makeStyles } from '@material-ui/core';
+import { createStyles, makeStyles, Button } from '@material-ui/core';
 import { useEffect } from 'react';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import {BASE_URL} from '../../constants/constants'
 import { useHistory } from 'react-router';
+import { fetchAuctions } from '../../redux/actions/myAuctions';
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -28,8 +32,7 @@ const useStyles = makeStyles((theme) =>
             width: '100%',
             display: 'flex',
             marginTop: '20px',
-            flexDirection: 'column',
-           
+            flexDirection: 'column'
         },
         cardItem: {
             width: '100%',
@@ -42,16 +45,6 @@ const useStyles = makeStyles((theme) =>
             alignItems: 'center',
             justifyContent: 'space-between',
             backgroundColor: '#ffffff',
-            '&:hover':{
-                cursor: 'pointer',
-                boxShadow: '0px 10px 8px 0px rgba(50, 50, 50, 0.25)',
-            }
-        },
-        cardItemMain:{
-            display: 'flex', 
-            flexDirection: 'column',
-            height: '100%',
-            justifyContent: 'space-around'
         },
         cardItemImg: {
             width: '30%',
@@ -64,30 +57,35 @@ const useStyles = makeStyles((theme) =>
             flexDirection: 'column', 
             justifyContent: 'space-between',
         },
-        cardItemDate: {
-
+        cardItemName: {
+            color: 'blue', 
+            fontWeight: 500, 
+            marginBottom: '20px'
         },
-        cardItemTotal: {
-
+        cardItemQuantity: {
+            color: 'gray', 
+            fontWeight: 500
         },
-        text: {
-            fontWeight: 500,
-            color: 'gray'
+        cardItemButtons: {
+            display: 'flex'
+        },
+        cardItemButtonsEdit: {
+            color: 'blue', 
+            marginRight: '10px'
         }
     })
 )
 
 
-export default function Products(){
+export default function MyAuctions(){
     const classes = useStyles();
     const dispatch = useDispatch();
-    const orders = useSelector((store) => store.orders.orders);
+    const auctions = useSelector((store) => store.myAuctions.auctions);
     const history = useHistory();
     
     useEffect(() => {
-        dispatch(fetchOrders());
+        dispatch(fetchAuctions());
     }, [ dispatch])
-
 
     function transformDate(date){
         const newDate = new Date(date);
@@ -95,27 +93,28 @@ export default function Products(){
 
         return `${newDate.getDate()}/${month}/${newDate.getFullYear()}`
     }
-
     return (
         <div className={classes.card}>
             <div className={classes.cardHeader}>
-                <h3>Покупки</h3>
+                <h3>Аукционы</h3>
+                <Button variant="contained" color='primary' onClick={() => history.push('/new-auction')}>+ НОВЫЙ АУКЦИОН</Button>
             </div>
-            {orders && !orders.length && <h1 style={{margin: '40px'}}>Нету заказов</h1>}
-            <div className={classes.cardItemsContainer} >
-                {orders.map(order => (
-                    <div key={order.id} className={classes.cardItem} onClick={() => history.push(`/order-details/${order.id}`)}>
-                        <div className={classes.cardItemMain} >
-                            <div className={classes.cardItemDate}>
-                                <span className={classes.text}>Дата покупки: {transformDate(order.orderDate)}</span>
-                            </div>
+            {auctions && !auctions.length && <h1 style={{margin: '40px'}}>Нету аукционов</h1>}
+            <div className={classes.cardItemsContainer}>
+                {auctions.map(auction => (
+                    <div key={auction.id} className={classes.cardItem}>
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            <img  className={classes.cardItemImg} src={`${BASE_URL}${auction.photo}`} alt=''/>
                             <div className={classes.cardItemInfo}>
-                                <span className={classes.text}>Адрес: {order.country}, {order.city}, {order.address}</span>
-                                <span className={classes.text}>Телефон: {order.phone}</span>
+                                <span className={classes.cardItemName}>{auction.name}</span>
+                                <span className={classes.cardItemQuantity}>Цена: $ {auction.price}</span>
+                                <span className={classes.cardItemQuantity}> Начало: {transformDate(auction.bidStart)}</span>
+                                <span className={classes.cardItemQuantity}> Конец: {transformDate(auction.bidEnd)}</span>
                             </div>
                         </div>
-                        <div className={classes.cardItemTotal}>
-                            <span className={classes.text}>Сумма заказа: $ {order.totalSum}</span>
+                        <div className={classes.cardItemButtons}>
+                            <EditIcon className={classes.cardItemButtonsEdit}/>
+                            <DeleteIcon style={{color: 'red'}}/>
                         </div>
                     </div>
                 ))}

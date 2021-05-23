@@ -1,8 +1,9 @@
-import { SEND_ORDER_SUCCESS, SEND_ORDER_FAIL, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_FAIL } from '../../constants/orders'
+import { SEND_ORDER_SUCCESS, SEND_ORDER_FAIL, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_FAIL ,FETCH_ORDER_SUCCESS, FETCH_ORDER_FAIL  } from '../../constants/orders'
 
 const initialState = {
     orders: [],
-    errorMessage: ''
+    errorMessage: '',
+    order: null
 };
 
 const ordersReducer = (state = initialState, action) => {
@@ -27,6 +28,17 @@ const ordersReducer = (state = initialState, action) => {
                 errorMessage: ''
             };
         case FETCH_ORDERS_FAIL:
+            return {
+                ...state,
+                errorMessage: action.payload,
+            };
+        case FETCH_ORDER_SUCCESS:
+            return {
+                ...state,
+                order: action.payload,
+                errorMessage: ''
+            };
+        case FETCH_ORDER_FAIL:
             return {
                 ...state,
                 errorMessage: action.payload,

@@ -6,6 +6,7 @@ import basketReducer from "./basket-reducer/basket-reducer";
 import productsReducer from './products-reducer/products-reducet'
 import ordersReducer from './orders-reducer/orders-reducer'
 import profileReducer from './profile-reducer/profiel-reducer'
+import myAuctionsReducer from './my-auctions-reducer/my-auctions-reducer'
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     basket: basketReducer,
     userProducts: productsReducer,
     orders: ordersReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    myAuctions: myAuctionsReducer
 });
 
 export default rootReducer;

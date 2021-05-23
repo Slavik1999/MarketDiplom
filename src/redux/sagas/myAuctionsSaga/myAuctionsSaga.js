@@ -1,71 +1,66 @@
 import axios from "axios";
-import { put, takeEvery } from "redux-saga/effects";
-import { FETCH_PROFILE, FETCH_PROFILE_SUCCESS, FETCH_PROFILE_FAIL, UPDATE_PROFILE, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL} from '../../constants/profile'
+import {put, takeEvery} from "redux-saga/effects";
+import { FETCH_MY_AUCTIONS, FETCH_MY_AUCTIONS_SUCCESS, FETCH_MY_AUCTIONS_FAIL, CREATE_AUCTION, CREATE_AUCTION_SUCCESS, CREATE_AUCTION_FAIL} from '../../constants/myAuctions'
 import {BASE_URL} from "../../../constants/constants";
 
-export function* profileSaga(action) {
+export function* auctionsSaga() {
     try {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
           
-        const res = yield axios.get(`${BASE_URL}api/users/profile`,
+        const res = yield axios.get(`${BASE_URL}api/users/auctions`,
         {
             headers: headers
         }).then(res => res)
 
         yield put({
-            type: FETCH_PROFILE_SUCCESS,
+            type: FETCH_MY_AUCTIONS_SUCCESS,
             payload: res.data
         })
-
+        
     } catch (e) {
         console.log(e);
         yield put({
-            type: FETCH_PROFILE_FAIL,
+            type: FETCH_MY_AUCTIONS_FAIL,
             payload: e.response.data.message
         })
-
     }
 }
 
-export function* updateProfileSaga(action) {
+export function* createAuctionSaga(action) {
     try {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
           
-        const res = yield axios.put(`${BASE_URL}api/users/profile`, action.payload.formData,
+        const res = yield axios.post(`${BASE_URL}api/auctions`, action.payload.newAuction,
         {
             headers: headers
         }).then(res => res)
 
+        console.log(res)
         yield put({
-            type: UPDATE_PROFILE_SUCCESS,
+            type: CREATE_AUCTION_SUCCESS,
             payload: res.data
         })
-
-        yield put({
-            type: FETCH_PROFILE,
-        })
-
         action.payload.clearForm();
-
+        action.payload.history.push('/my-auctions')
+        
     } catch (e) {
         console.log(e);
         yield put({
-            type: UPDATE_PROFILE_FAIL,
+            type: CREATE_AUCTION_FAIL,
             payload: e.response.data.message
         })
-
     }
 }
 
-function* watchSignInSaga() {
-    yield takeEvery(FETCH_PROFILE, profileSaga);
-    yield takeEvery(UPDATE_PROFILE, updateProfileSaga);
+function* watchGetAllSaga() {
+    yield takeEvery(FETCH_MY_AUCTIONS, auctionsSaga);
+    yield takeEvery(CREATE_AUCTION, createAuctionSaga);
 }
 
-export default watchSignInSaga;
+export default watchGetAllSaga;

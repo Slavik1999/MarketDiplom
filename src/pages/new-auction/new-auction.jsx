@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { createProduct } from '../../redux/actions/productsActions';
+import { createAuction } from '../../redux/actions/myAuctions';
 import { createStyles, makeStyles, Button, Input } from '@material-ui/core';
 import { useRef, useState } from 'react';
 
@@ -83,19 +83,23 @@ const useStyles = makeStyles((theme) =>
     })
 )
 
-export default function NewProduct(){
+export default function NewAuction(){
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
     const form = useRef(null)
-    const error = useSelector((store) => store.userProducts.errorMessage)
+    const error = useSelector((store) => store.myAuctions.errorMessage)
     
     const [formValue, setFormValue] = useState({
         name: '',
         description: '',
         quantity: '',
-        price: 0
+        price: 0,
+        bidEnd: new Date(),
+        bidStart: new Date()
+
     })
+
     const [img, setImg] = useState({
         image: null,
         imagePreview: null
@@ -144,8 +148,15 @@ export default function NewProduct(){
             name: '',
             description: '',
             quantity: '',
-            price: 0
+            price: 0,
+            bidEnd: new Date(),
+            bidStart: new Date()
         });
+
+        setImg({
+            image: null,
+            imagePreview: null
+        })
     }
 
 
@@ -161,18 +172,13 @@ export default function NewProduct(){
             formData.append(key, newProduct[key]);
         }
 
-        dispatch(createProduct(formData, history, clearForm));
-
-        setImg({
-            image: null,
-            imagePreview: null
-        })
+        dispatch(createAuction(formData, history, clearForm));
 
     }
 
     return (
         <div  className={classes.root}>
-            <h3 style={{textAlign: 'center'}}>Новый Продукт</h3>
+            <h3 style={{textAlign: 'center'}}>Новый Аукцион</h3>
             <form id='form' ref={form} className={classes.form} onSubmit={onSubmit}>
                 <div className={classes.imgInputContainer}>
                     <label htmlFor='file' className={classes.imgInputLabel}>
@@ -194,6 +200,8 @@ export default function NewProduct(){
                 <Input className={classes.input} value={formValue.description} placeholder="Описание" name='description' type="text" onChange={onChange} required  />
                 <Input className={classes.input} value={formValue.quantity} placeholder="Количество" name='quantity' type="number" onChange={onChange} required  />
                 <Input className={classes.input} value={formValue.price} placeholder="Цена" min={0} name='price' type="number" onChange={onChange} required  />
+                <Input className={classes.input} value={formValue.bidStart} placeholder="Начало аукциона" min={0} name='bidStart' type="date" onChange={onChange} required  />
+                <Input className={classes.input} value={formValue.bidEnd} placeholder="Конец аукциона" min={0} name='bidEnd' type="date" onChange={onChange} required  />
                 <div className={classes.cardButtons}>
                     <Button  variant="contained" type='submit' color='primary'>Отправить</Button>
                     <Button  variant="contained">Отмена</Button>

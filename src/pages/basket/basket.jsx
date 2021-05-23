@@ -98,7 +98,8 @@ const useStyles = makeStyles((theme) =>
         },
         cardFooterTotal: {
             fontSize: '16px',
-            fontWeight: 600
+            fontWeight: 600,
+            whiteSpace: 'nowrap'
         },
         cardFooterButtons: {
             marginLeft: '10px',
@@ -117,6 +118,7 @@ export default function Bakset(){
     const classes = useStyles();
     const dispatch = useDispatch();
     const [total, setTotal] = useState(0);
+    const [totalQuantity, setTotalQuantity] = useState(0);
     const [isShowCheckout, setIsShowCheckout] =  useState(false);
     const basket = useSelector((store) => store.basket.basket);
 
@@ -125,8 +127,13 @@ export default function Bakset(){
             const totalPrice = basket.reduce(function (accumulator, product) {
                 return accumulator + product.cost;
             }, 0);
+
+            const totalQuantity = basket.reduce(function (accumulator, product) {
+                return accumulator + product.quantity;
+            }, 0);
     
             setTotal(totalPrice);
+            setTotalQuantity(totalQuantity);
         }
 
         if(!basket.length){
@@ -154,7 +161,7 @@ export default function Bakset(){
                 <div className={classes.cardItemsContainer}>
                 {basket.map(product => (
                     <div key={product.id} className={classes.cardItem}>
-                        <div>
+                        <div style={{display: 'flex'}}>
                             <img className={classes.cardItemImg} src={`http://afternoon-waters-64991.herokuapp.com/${product.photo}`} alt=''/>
                             <div className={classes.cardItemInfo}>
                                 <span className={classes.cardItemInfoBlue}>{product.name}</span>
@@ -174,7 +181,10 @@ export default function Bakset(){
                 ))}
                 </div>
                 <div className={classes.cardFooter}>
-                    <span className={classes.cardFooterTotal}>Total: ${total}</span>
+                   <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <span className={classes.cardFooterTotal}>Общая сумма: ${total}</span>
+                    <span className={classes.cardFooterTotal}>Общее количество: {totalQuantity}</span>
+                   </div>
                     <div className={classes.cardFooterButtons}>
                         {localStorage.getItem('token') && (!isShowCheckout && ( <Button variant="contained" color="secondary" disabled={!basket || !basket.length} onClick={toggleShowCheckout} className={classes.cardFooterButton}>
                             Покупка

@@ -1,4 +1,4 @@
-import { SEND_ORDER, FETCH_ORDERS } from '../constants/orders'
+import { SEND_ORDER, FETCH_ORDERS, FETCH_ORDER } from '../constants/orders'
 
 export const sendOrder = function (order) {
 
@@ -14,3 +14,10 @@ export const fetchOrders = function () {
         type: FETCH_ORDERS,
     };
 };
+
+export const fetchOrder = function (orderId) {
+    return {
+        type: FETCH_ORDER,
+        payload:orderId
+    }
+}

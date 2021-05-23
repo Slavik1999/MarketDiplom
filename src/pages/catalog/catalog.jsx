@@ -99,9 +99,7 @@ export default function Catalog(){
     const history = useHistory();
 
     useEffect(() => {
-        if(!products){
-            dispatch(productsReq());
-        }
+        dispatch(productsReq());
     }, [dispatch, products])
 
     useEffect(() => {
